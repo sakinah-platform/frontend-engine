@@ -30,9 +30,9 @@ export default function RootLayout({
 			<html lang='id'>
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-					<div className='min-h-screen bg-neutral-100'>
+					<div className='min-h-screen'>
 						<MainNavbar />
-						{children}
+						<div className='px-3 py-2 md:container mx-auto'>{children}</div>
 					</div>
 				</body>
 			</html>

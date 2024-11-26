@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ApplicationLogo from "./ApplicationLogo";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { faCartShopping, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+	faCartShopping,
+	faHeart,
+	faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const MainNavbar = () => {
 	const auth: any = {
@@ -36,25 +40,25 @@ export const MainNavbar = () => {
 		//     console.error("Error response: ", error.response.data.message); // Log error to console
 		// }
 	};
+
 	return (
 		<Navbar className='w-[95%] mx-auto rounded-b-2xl shadow' fluid rounded>
-			<div className='flex items-center basis-1/3 gap-5'>
-				<Navbar.Brand href='/'>
-					<ApplicationLogo className='object-cover h-12 w-24 ' />
-				</Navbar.Brand>
-				<div className='relative flex grow'>
+			<Navbar.Brand href='/'>
+				<ApplicationLogo className='object-cover h-12 w-24' />
+			</Navbar.Brand>
+			{/* <div className='flex items-center basis-1/3 gap-5'>
+				<div className='relative grow hidden md:flex'>
 					<input
-						className='border-2 border-amber-800 rounded p-2 pr-10 grow h-9'
+						className='border-2 border-amber-800 rounded-lg p-2 pr-10 grow h-10'
 						placeholder='Cari...'
 					/>
-					<button className='bg-amber-800 text-white px-2 rounded-md absolute end-0 mt-1 me-1'>
+					<button className='bg-amber-800 text-white px-2 py-1 rounded-md absolute end-0 mt-1 me-1'>
 						<FontAwesomeIcon icon={faSearch} />
 					</button>
 				</div>
-			</div>
+			</div> */}
 
 			<div className='flex md:order-2 items-center gap-3'>
-				<FontAwesomeIcon icon={faCartShopping} size='2x' />
 				<Dropdown
 					arrowIcon={false}
 					inline
@@ -79,12 +83,13 @@ export const MainNavbar = () => {
 				</Dropdown>
 				<Navbar.Toggle />
 			</div>
-			{/* <Navbar.Collapse>
+			<Navbar.Collapse>
 				<Navbar.Link href='#' active>
-					Home
+					Wedding Vendor
 				</Navbar.Link>
-				<Navbar.Link href='#'>About</Navbar.Link>
-			</Navbar.Collapse> */}
+				<Navbar.Link href='#'>Wedding Checklist</Navbar.Link>
+				<Navbar.Link href='#'>Wedding Calculator</Navbar.Link>
+			</Navbar.Collapse>
 		</Navbar>
 	);
 };
