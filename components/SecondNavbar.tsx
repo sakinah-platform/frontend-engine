@@ -1,10 +1,8 @@
 "use client";
 
-import ApplicationLogo from "./ApplicationLogo";
+import { Dropdown, Navbar } from "flowbite-react";
 
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
-
-export const MainNavbar = () => {
+export const SecondNavbar = () => {
 	// const handleLogout = async () => {
 	// dispatch(processStateReducer("loading"));
 	// try {
@@ -25,15 +23,13 @@ export const MainNavbar = () => {
 	// } catch (error) {
 	//     dispatch(processMessageFailedReducer(error.response.data.message));
 	//     console.error("Error response: ", error.response.data.message); // Log error to console
-	// 	// }
+	// }
 	// };
 
 	return (
-		<Navbar className='w-[95%] mx-auto rounded-b-2xl shadow' fluid rounded>
+		<Navbar className='bg-secondary text-white text-lg' fluid rounded>
 			<Navbar.Brand href='/'>
-				<div className='relative w-24 h-16'>
-					<ApplicationLogo className='object-cover' alt='Logo Navbar' />
-				</div>
+				<span className='font-timesNewRoman'>Wedding Platform</span>
 			</Navbar.Brand>
 
 			<div className='flex md:order-2 items-center gap-3'>
@@ -41,11 +37,9 @@ export const MainNavbar = () => {
 					arrowIcon={false}
 					inline
 					label={
-						<Avatar
-							alt='User settings'
-							img='https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-							rounded
-						/>
+						<button className='text-secondary bg-white px-2 py-1 font-bold rounded-lg'>
+							LOGIN
+						</button>
 					}>
 					<Dropdown.Header>
 						<span className='block text-sm'>Bonnie Green</span>
@@ -62,14 +56,16 @@ export const MainNavbar = () => {
 				<Navbar.Toggle />
 			</div>
 			<Navbar.Collapse>
-				<Navbar.Link href='#' active>
-					<button className='bg-primary text-white px-3 py-1 rounded-lg font-bold'>
-						Wedding Vendor
-					</button>
-					<div className='text-center pb-2 bg-primary mt-2 rounded-full w-16 mx-auto'></div>
+				<Navbar.Link href='#'>
+					<span className='text-white'>Wedding Vendor</span>
+					<div className='text-center pb-1 bg-white mt-2 rounded-full w-8 mx-auto'></div>
 				</Navbar.Link>
-				<Navbar.Link href='#'>Wedding Checklist</Navbar.Link>
-				<Navbar.Link href='#'>Wedding Calculator</Navbar.Link>
+				<Navbar.Link href='#'>
+					<span className='text-white'>Wedding Checklist</span>
+				</Navbar.Link>
+				<Navbar.Link href='#'>
+					<span className='text-white'>Wedding Calculator</span>
+				</Navbar.Link>
 			</Navbar.Collapse>
 		</Navbar>
 	);
