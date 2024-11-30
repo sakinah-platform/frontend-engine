@@ -26,7 +26,7 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 	return (
 		<div className='flex'>
 			<button
-				className='p-4 text-white hover:text-stone-400'
+				className='p-4 text-secondary hover:text-primary'
 				onClick={() => swiperRef.current?.slidePrev()}>
 				<FontAwesomeIcon icon={faChevronCircleLeft} />
 			</button>
@@ -47,7 +47,7 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 				virtual>
 				{reviews.map((item, i) => (
 					<SwiperSlide key={i} virtualIndex={i}>
-						<div className='md:flex bg-[#AB9B9C] p-3 items-center justify-center rounded-lg shadow-md min-h-64'>
+						<div className='md:flex bg-secondary p-3 items-center justify-center rounded-lg shadow-md min-h-64'>
 							<img
 								className='lg:w-36 lg:h-36 md:w-20 md:h-20 sm:w-36 sm:h-36 max-w-32 max-h-32 object-cover mx-auto rounded-2xl p-2'
 								src={`/photos/${item.photo}`}
@@ -57,7 +57,7 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 								<div className=' md:text-start text-center text-xs mb-4 lg:w-56 md:w-36 max-w-80 mx-auto'>
 									"{item.content}"
 								</div>
-								<div className='text-center font-playfair text-md leading-none'>
+								<div className='text-center font-alice text-md leading-none'>
 									{item.bride} & {item.groom}
 								</div>
 								<span className='text-xs mt-0'>Married {item.date}</span>
@@ -68,7 +68,7 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 			</Swiper>
 
 			<button
-				className={`p-4 text-white hover:text-stone-400`}
+				className={`p-4 text-secondary hover:text-primary`}
 				onClick={() => {
 					swiperRef.current?.slideNext();
 				}}>

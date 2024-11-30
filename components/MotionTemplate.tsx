@@ -9,7 +9,7 @@ import { NextFont } from "next/dist/compiled/@next/font";
 import { Playfair_Display } from "next/font/google";
 import { useRef, useState } from "react";
 
-const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
+// const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
 
 export const UpReveal = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -24,10 +24,10 @@ export const UpReveal = ({ children }: { children: React.ReactNode }) => {
 
 export const UpRevealWord = ({
 	words,
-	fontFamily = playfairDisplay,
+	fontFamily = "font-alice",
 }: {
 	words: string[];
-	fontFamily?: NextFont;
+	fontFamily?: string;
 }) => {
 	// const words = ["Greatest", "Awesome", "Perfect"];
 	const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -37,7 +37,7 @@ export const UpRevealWord = ({
 	};
 	return (
 		<motion.div
-			className={`${fontFamily.className} relative block overflow-hidden whitespace-nowrap uppercase`}
+			className={`${fontFamily} relative block overflow-hidden whitespace-nowrap uppercase`}
 			key={currentWordIndex}>
 			<motion.div
 				initial={{ y: 15 }}

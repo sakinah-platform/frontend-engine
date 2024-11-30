@@ -15,11 +15,12 @@ export default {
 			colors: {
 				background: "var(--background)",
 				foreground: "var(--foreground)",
-				primary: "#985D2B",
-				secondary: "#Ab9b9c",
+				primary: "#606b60",
+				secondary: "#7c8b6b",
 			},
 			fontFamily: {
 				playfair: ['"Playfair DIsplay"'],
+				alice: ['"Alice"'],
 				timesNewRoman: ["Times New Roman"],
 			},
 			link: {
@@ -32,6 +33,9 @@ export default {
 					on: "text-gray-400 hover:cursor-not-allowed dark:text-gray-600",
 					off: "",
 				},
+			},
+			borderRadius: {
+				"2xl": "2rem",
 			},
 		},
 	},

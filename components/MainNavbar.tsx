@@ -85,10 +85,10 @@ export const MainNavbar = () => {
 			</div>
 			<Navbar.Collapse>
 				<Navbar.Link href='#' active>
-					<button className='bg-[#985D2B] text-white px-3 py-1 rounded-lg font-bold'>
+					<button className='bg-primary text-white px-3 py-1 rounded-lg font-bold'>
 						Wedding Vendor
 					</button>
-					<div className='text-center pb-2 bg-[#985D2B] mt-2 rounded-full w-16 mx-auto'></div>
+					<div className='text-center pb-2 bg-primary mt-2 rounded-full w-16 mx-auto'></div>
 				</Navbar.Link>
 				<Navbar.Link href='#'>Wedding Checklist</Navbar.Link>
 				<Navbar.Link href='#'>Wedding Calculator</Navbar.Link>

@@ -1,27 +1,30 @@
 "use client";
-import { Button, Carousel } from "flowbite-react";
-import Image from "next/image";
-import { Playfair_Display } from "next/font/google";
-import { animate, motion, useTime, useTransform } from "framer-motion";
 import {
 	CountingText,
 	UpReveal,
 	UpRevealWord,
 } from "@/components/MotionTemplate";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade } from "swiper/modules";
 import { SliderCard } from "@/components/SliderCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCopyright, faGlobe, faX } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MainNavbar } from "@/components/MainNavbar";
 import { SecondNavbar } from "@/components/SecondNavbar";
-
-const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
+import { useDispatch, useSelector } from "react-redux";
+import categorySlice, {
+	failure,
+	start,
+	categoryReducer,
+} from "../lib/redux/slicer/CategorySlicer";
+import { AppDispatch, RootState } from "../lib/store";
+import { Form, Formik } from "formik";
 
 export default function Home() {
 	const [template, setTemplate] = useState(0);
+	const categories = useSelector((state: RootState) => state.categories.data);
+	const dispatch = useDispatch<AppDispatch>();
+
 	type CategoriesType = {
 		[x: string]: any;
 		title: string;
@@ -34,7 +37,7 @@ export default function Home() {
 		image: string;
 	};
 
-	const categories: CategoriesType[] = [
+	const category: CategoriesType[] = [
 		{ title: "Attire" },
 		{ title: "Catering" },
 		{ title: "Souvenir" },
@@ -108,6 +111,10 @@ export default function Home() {
 			date: "February 2024",
 		},
 	];
+
+	useEffect(() => {
+		dispatch(categoryReducer(category));
+	}, [dispatch]);
 	return (
 		<>
 			<div className='fixed top-20 end-0 bg-white shadow-lg px-4 py-2 rounded-s-lg border-s-2 border-y-2 border-primary'>
@@ -116,7 +123,8 @@ export default function Home() {
 						className={`px-2 py-1 rounded me-2 border-2 border-primary ${
 							template == i ? "bg-primary text-white" : ""
 						}`}
-						onClick={() => setTemplate(i)}>
+						onClick={() => setTemplate(i)}
+						key={i}>
 						Template {i + 1}
 					</button>
 				))}
@@ -144,45 +152,82 @@ export default function Home() {
 								</div>
 								<div className='text-center text-md md:text-lg lg:text-2xl xl:text-3xl my-10'>
 									We have successfully help
-									<strong className={`${playfairDisplay.className} m-2`}>
+									<strong className={`font-alice m-2`}>
 										<CountingText from={1111} to={1357} /> thousands
 									</strong>
 									Bride and Groom
 									<br />
-									<strong className={`${playfairDisplay.className}`}>
+									<strong className={`font-alice`}>
 										Plan their fairy-tale wedding
 									</strong>
 								</div>
 								<div className='rounded-lg shadow bg-white p-4 text-center'>
 									<div
-										className={`${playfairDisplay.className} underline underline-offset-4 md:text-lg lg:text-2xl`}>
+										className={`font-alice font-bold underline underline-offset-4 md:text-lg lg:text-2xl`}>
 										What do you need?
 									</div>
-									<div className='grid lg:grid-rows-6 sm:grid-rows-12 sm:grid-flow-col gap-1 ms-10 mt-3'>
-										{categories
-											.slice()
-											.sort((a, b) => a.title[0].localeCompare(b.title[0]))
-											.map((item, i) => (
-												<div className='flex items-center' key={i}>
-													<input
-														id={`checked-checkbox-${i}`}
-														type='checkbox'
-														value={i}
-														className='w-5 h-5 text-amber-600 border-amber-800 rounded hover:rounded-full focus:ring-amber-500 focus:ring-2'
-													/>
-													<label
-														htmlFor={`checked-checkbox-${i}`}
-														className='ms-2 text-md lg:text-lg font-medium text-gray-900'>
-														{item.title}
-													</label>
+									<Formik
+										initialValues={{
+											categories: [] as number[],
+										}}
+										// validationSchema={{}}
+										onSubmit={(values) => {
+											// same shape as initial values
+											console.log(values);
+										}}>
+										{({ errors, touched, values, setFieldValue }) => (
+											<Form>
+												<div className='grid lg:grid-rows-6 sm:grid-rows-12 sm:grid-flow-col gap-1 ms-10 mt-3'>
+													{categories
+														.slice()
+														.sort((a, b) =>
+															a.title[0].localeCompare(b.title[0])
+														)
+														.map((item, i) => (
+															<div className='flex items-center' key={i}>
+																<input
+																	id={`checked-checkbox-${i}`}
+																	type='checkbox'
+																	value={i}
+																	checked={values.categories.includes(i)}
+																	onChange={(e) => {
+																		if (e.target.checked) {
+																			// Add to categories
+																			setFieldValue("categories", [
+																				...values.categories,
+																				i,
+																			]);
+																		} else {
+																			// Remove from categories
+																			setFieldValue(
+																				"categories",
+																				values.categories.filter(
+																					(category) => category !== i
+																				)
+																			);
+																		}
+																	}}
+																	className={`w-5 h-5 text-primary border-primary rounded${
+																		values.categories.includes(i) ? "-full" : ""
+																	} hover:rounded-full focus:ring-amber-500 focus:ring-2`}
+																	name='categories[]'
+																/>
+																<label
+																	htmlFor={`checked-checkbox-${i}`}
+																	className='ms-2 text-md lg:text-lg font-medium text-gray-900'>
+																	{item.title}
+																</label>
+															</div>
+														))}
 												</div>
-											))}
-									</div>
-									<button
-										type='button'
-										className='text-white bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 font-bold rounded-lg text-md lg:text-lg px-5 py-1.5 m-3'>
-										Find
-									</button>
+												<button
+													type='submit'
+													className='btn-primary font-bold lg:text-lg px-5 py-1.5 m-3'>
+													Find
+												</button>
+											</Form>
+										)}
+									</Formik>
 								</div>
 								<div className='my-3 xl:mx-24 sm:mx-auto'>
 									{explains?.map((item, i) => {
@@ -209,7 +254,7 @@ export default function Home() {
 
 													<button
 														type='button'
-														className='text-white bg-yellow-800 hover:bg-yellow-600 focus:ring-4 focus:ring-amber-700 font-bold rounded-lg text-sm md:text-md px-3 py-2'>
+														className='btn-primary font-bold'>
 														Learn More
 													</button>
 												</div>
@@ -224,39 +269,42 @@ export default function Home() {
 									</div>
 									<SliderCard reviews={reviews} />
 								</div>
-								<div className='text-center text-md md:text-lg lg:text-2xl xl:text-3xl my-10'>
+								<div className='text-center text-md md:text-lg lg:text-2xl xl:text-3xl py-10'>
 									Because you deserve your own fairy-tale to come true
 									<br />
-									<button
-										type='button'
-										className='text-white bg-yellow-800 hover:bg-yellow-600 focus:ring-4 focus:ring-amber-700 font-bold rounded-lg text-sm md:text-md px-3 py-2'>
+									<button type='button' className='btn-primary font-bold'>
 										Register Now
 									</button>
 								</div>
-								<div className='bg-primary text-white px-16 pt-3 pb-0 shadow-lg rounded-t-lg'>
-									<div className='text-center pb-2 bg-white rounded-full w-24 mx-auto'></div>
-									<div className='text-3xl font-bold mt-3'>
-										Wedding Platform
-									</div>
-									<span className='text-md'>Tagline Here</span>
-									<hr />
-									<div className='flex text-xs py-3 justify-between'>
-										<div className='flex gap-8'>
-											<span>@C 2024 Wedding Platform, Inc.</span>
-											<ul className='flex flex-wrap items-center justify-center gap-5'>
-												<li>- Privacy</li>
-												<li>- Terms</li>
-												<li>- Sitemap</li>
-											</ul>
+								<div className='bg-primary text-white md:px-32 px-16 pt-3 pb-2 shadow-lg rounded-t-2xl shadow-lg'>
+									<div className='text-center pb-1 bg-white rounded-full w-24 mx-auto'></div>
+									<div className='shadow-lg text-white rounded-lg mt-10'>
+										<div className='text-3xl font-bold mt-3'>
+											Wedding Platform
 										</div>
-										<div className='flex gap-2'>
-											<span>
-												<FontAwesomeIcon icon={faGlobe} />
-												English (US)
-											</span>
-											<FontAwesomeIcon icon={faFacebook} />
-											<FontAwesomeIcon icon={faX} />
-											<FontAwesomeIcon icon={faInstagram} />
+										<span className='text-md'>Tagline Here</span>
+										<hr />
+										<div className='flex text-xs py-3 justify-between'>
+											<div className='flex gap-8'>
+												<span>
+													<FontAwesomeIcon icon={faCopyright} /> 2024 Wedding
+													Platform, Inc.
+												</span>
+												<ul className='flex flex-wrap items-center justify-center gap-5'>
+													<li>- Privacy</li>
+													<li>- Terms</li>
+													<li>- Sitemap</li>
+												</ul>
+											</div>
+											<div className='flex gap-2'>
+												<span>
+													<FontAwesomeIcon icon={faGlobe} />
+													English (US)
+												</span>
+												<FontAwesomeIcon icon={faFacebook} />
+												<FontAwesomeIcon icon={faX} />
+												<FontAwesomeIcon icon={faInstagram} />
+											</div>
 										</div>
 									</div>
 								</div>
