@@ -10,7 +10,7 @@ import {
 	faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
-export const MainNavbar = () => {
+export const SecondNavbar = () => {
 	const auth: any = {
 		user: {
 			name: "Fikar",
@@ -42,32 +42,19 @@ export const MainNavbar = () => {
 	};
 
 	return (
-		<Navbar className='w-[95%] mx-auto rounded-b-2xl shadow' fluid rounded>
+		<Navbar className='bg-secondary text-white text-lg' fluid rounded>
 			<Navbar.Brand href='/'>
-				<ApplicationLogo className='object-cover h-12 w-24' />
+				<span className='font-timesNewRoman'>Wedding Platform</span>
 			</Navbar.Brand>
-			{/* <div className='flex items-center basis-1/3 gap-5'>
-				<div className='relative grow hidden md:flex'>
-					<input
-						className='border-2 border-amber-800 rounded-lg p-2 pr-10 grow h-10'
-						placeholder='Cari...'
-					/>
-					<button className='bg-amber-800 text-white px-2 py-1 rounded-md absolute end-0 mt-1 me-1'>
-						<FontAwesomeIcon icon={faSearch} />
-					</button>
-				</div>
-			</div> */}
 
 			<div className='flex md:order-2 items-center gap-3'>
 				<Dropdown
 					arrowIcon={false}
 					inline
 					label={
-						<Avatar
-							alt='User settings'
-							img='https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-							rounded
-						/>
+						<button className='text-secondary bg-white px-2 py-1 font-bold rounded-lg'>
+							LOGIN
+						</button>
 					}>
 					<Dropdown.Header>
 						<span className='block text-sm'>Bonnie Green</span>
@@ -84,14 +71,16 @@ export const MainNavbar = () => {
 				<Navbar.Toggle />
 			</div>
 			<Navbar.Collapse>
-				<Navbar.Link href='#' active>
-					<button className='bg-primary text-white px-3 py-1 rounded-lg font-bold'>
-						Wedding Vendor
-					</button>
-					<div className='text-center pb-2 bg-primary mt-2 rounded-full w-16 mx-auto'></div>
+				<Navbar.Link href='#'>
+					<span className='text-white'>Wedding Vendor</span>
+					<div className='text-center pb-1 bg-white mt-2 rounded-full w-8 mx-auto'></div>
 				</Navbar.Link>
-				<Navbar.Link href='#'>Wedding Checklist</Navbar.Link>
-				<Navbar.Link href='#'>Wedding Calculator</Navbar.Link>
+				<Navbar.Link href='#'>
+					<span className='text-white'>Wedding Checklist</span>
+				</Navbar.Link>
+				<Navbar.Link href='#'>
+					<span className='text-white'>Wedding Calculator</span>
+				</Navbar.Link>
 			</Navbar.Collapse>
 		</Navbar>
 	);
