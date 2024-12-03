@@ -12,13 +12,10 @@ import { useEffect, useState } from "react";
 import { MainNavbar } from "@/components/MainNavbar";
 import { SecondNavbar } from "@/components/SecondNavbar";
 import { useDispatch, useSelector } from "react-redux";
-import categorySlice, {
-	failure,
-	start,
-	categoryReducer,
-} from "../lib/redux/slicer/CategorySlicer";
+import { categoryReducer } from "../lib/redux/slicer/CategorySlicer";
 import { AppDispatch, RootState } from "../lib/store";
 import { Form, Formik } from "formik";
+import Image from "next/image";
 
 export default function Home() {
 	const [template, setTemplate] = useState(0);
@@ -26,7 +23,7 @@ export default function Home() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	type CategoriesType = {
-		[x: string]: any;
+		[x: string]: string;
 		title: string;
 	};
 
@@ -117,7 +114,7 @@ export default function Home() {
 	}, [dispatch]);
 	return (
 		<>
-			<div className='fixed top-20 end-0 bg-white shadow-lg px-4 py-2 rounded-s-lg border-s-2 border-y-2 border-primary'>
+			<div className='fixed top-20 end-0 bg-white shadow-lg px-4 py-2 rounded-s-lg border-s-2 border-y-2 border-primary z-10'>
 				{Array.from({ length: 2 }).map((_, i) => (
 					<button
 						className={`px-2 py-1 rounded me-2 border-2 border-primary ${
@@ -137,7 +134,7 @@ export default function Home() {
 							<UpReveal>
 								<div className="bg-[url('/banner/bg-1.png')] bg-no-repeat bg-center bg-cover rounded-lg shadow-md h-52 text-white flex items-center justify-between grid-cols-2">
 									<div className='pe-12 p-12 lg:p-28 font-bold text-lg lg:text-2xl'>
-										Let's create
+										Let&apos;s create
 										<br />
 										your
 										<span className='absolute lg:ms-4 ms-2 text-center'>
@@ -175,7 +172,7 @@ export default function Home() {
 											// same shape as initial values
 											console.log(values);
 										}}>
-										{({ errors, touched, values, setFieldValue }) => (
+										{({ values, setFieldValue }) => (
 											<Form>
 												<div className='grid lg:grid-rows-6 sm:grid-rows-12 sm:grid-flow-col gap-1 ms-10 mt-3'>
 													{categories
@@ -240,11 +237,14 @@ export default function Home() {
 													className={`${gapDiv} ${
 														i % 2 != 0 ? "md:order-last" : ""
 													}`}>
-													<img
-														src={`/photos/${item.image}`}
-														alt={item.image}
-														className={`rounded-lg shadow mx-auto`}
-													/>
+													<div className='relative w-82 h-48'>
+														<Image
+															src={`/photos/${item.image}`}
+															alt={item.image}
+															className='rounded-lg shadow object-cover'
+															fill
+														/>
+													</div>
 												</div>
 												<div className={`${gapDiv} text-start`}>
 													<div className='font-bold md:text-md lg:text-lg xl:text-2xl'>
@@ -336,11 +336,14 @@ export default function Home() {
 										className={`${gapDiv} ${
 											i % 2 != 0 ? "md:order-last" : ""
 										}`}>
-										<img
-											src={`/photos/${item.image}`}
-											alt={item.image}
-											className={`rounded-lg shadow mx-auto`}
-										/>
+										<div className='relative w-82 h-48'>
+											<Image
+												src={`/photos/${item.image}`}
+												alt={item.image}
+												className='rounded-lg shadow object-cover'
+												fill
+											/>
+										</div>
 									</div>
 									<div className={`${gapDiv} text-start`}>
 										<div className='md:text-md lg:text-lg xl:text-2xl'>

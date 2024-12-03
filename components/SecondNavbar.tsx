@@ -1,45 +1,30 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ApplicationLogo from "./ApplicationLogo";
-
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import {
-	faCartShopping,
-	faHeart,
-	faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { Dropdown, Navbar } from "flowbite-react";
 
 export const SecondNavbar = () => {
-	const auth: any = {
-		user: {
-			name: "Fikar",
-			email: "fikar.6@gmail.com",
-		},
-	};
-
-	const handleLogout = async () => {
-		// dispatch(processStateReducer("loading"));
-		// try {
-		//     const csrfToken = document.querySelector(
-		//         'input[name="_token"]'
-		//     ).value;
-		//     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
-		//     const response = await axios.post(route("logout"), {
-		//         headers: {
-		//             "Content-Type": "multipart/form-data",
-		//         },
-		//     });
-		//     console.log(response);
-		//     if (response.status === 200) {
-		//         dispatch(processStateReducer("success"));
-		//         location.replace(route("login"));
-		//     }
-		// } catch (error) {
-		//     dispatch(processMessageFailedReducer(error.response.data.message));
-		//     console.error("Error response: ", error.response.data.message); // Log error to console
-		// }
-	};
+	// const handleLogout = async () => {
+	// dispatch(processStateReducer("loading"));
+	// try {
+	//     const csrfToken = document.querySelector(
+	//         'input[name="_token"]'
+	//     ).value;
+	//     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
+	//     const response = await axios.post(route("logout"), {
+	//         headers: {
+	//             "Content-Type": "multipart/form-data",
+	//         },
+	//     });
+	//     console.log(response);
+	//     if (response.status === 200) {
+	//         dispatch(processStateReducer("success"));
+	//         location.replace(route("login"));
+	//     }
+	// } catch (error) {
+	//     dispatch(processMessageFailedReducer(error.response.data.message));
+	//     console.error("Error response: ", error.response.data.message); // Log error to console
+	// }
+	// };
 
 	return (
 		<Navbar className='bg-secondary text-white text-lg' fluid rounded>

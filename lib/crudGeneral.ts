@@ -1,14 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
-
-const dispatch = useDispatch();
 
 export const fetchData = async (
-	start: Function = () => null,
+	start: () => void = () => null,
 	route: string,
-	slicer: Function = () => null,
-	failure: Function = () => null
-) => {
+	slicer: (data: any) => any = () => null,
+	failure: (error: any) => void = () => null,
+	dispatch: (action: any) => void = () => null
+): Promise<void> => {
 	if (start) {
 		dispatch(start());
 	}
@@ -33,12 +31,13 @@ export const fetchData = async (
 };
 
 export const postData = async (
-	dataForm: any,
-	start: Function = () => null,
-	route: string,
-	slicer: Function = () => null,
-	failure: Function = () => null
-) => {
+	dataForm: Record<string, any>, // Use a generic object for form data
+	start: () => void = () => null, // Function to handle the start of the request
+	route: string, // Endpoint for the POST request
+	slicer: (data: any) => any = () => null, // Function to process the response data
+	failure: (error: any) => void = () => null, // Function to handle errors
+	dispatch: (action: any) => void = () => null // Function to dispatch actions
+): Promise<void> => {
 	if (start) {
 		dispatch(start());
 	}

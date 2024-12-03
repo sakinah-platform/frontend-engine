@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CategoryType {
-	[x: string]: any;
+	[x: string]: string;
 	title: string;
 }
 

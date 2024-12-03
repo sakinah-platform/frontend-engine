@@ -5,8 +5,6 @@ import {
 	useInView,
 	useIsomorphicLayoutEffect,
 } from "framer-motion";
-import { NextFont } from "next/dist/compiled/@next/font";
-import { Playfair_Display } from "next/font/google";
 import { useRef, useState } from "react";
 
 // const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
@@ -29,7 +27,6 @@ export const UpRevealWord = ({
 	words: string[];
 	fontFamily?: string;
 }) => {
-	// const words = ["Greatest", "Awesome", "Perfect"];
 	const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
 	const handleAnimationComplete = () => {
@@ -76,7 +73,7 @@ export const CountingText = ({
 			duration: 1.5,
 			ease: "easeOut",
 			...animateOpt,
-			onUpdate(value) {
+			onUpdate() {
 				el.textContent = (from / 1000).toFixed(3);
 			},
 		});

@@ -1,62 +1,40 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ApplicationLogo from "./ApplicationLogo";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import {
-	faCartShopping,
-	faHeart,
-	faSearch,
-} from "@fortawesome/free-solid-svg-icons";
 
 export const MainNavbar = () => {
-	const auth: any = {
-		user: {
-			name: "Fikar",
-			email: "fikar.6@gmail.com",
-		},
-	};
-
-	const handleLogout = async () => {
-		// dispatch(processStateReducer("loading"));
-		// try {
-		//     const csrfToken = document.querySelector(
-		//         'input[name="_token"]'
-		//     ).value;
-		//     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
-		//     const response = await axios.post(route("logout"), {
-		//         headers: {
-		//             "Content-Type": "multipart/form-data",
-		//         },
-		//     });
-		//     console.log(response);
-		//     if (response.status === 200) {
-		//         dispatch(processStateReducer("success"));
-		//         location.replace(route("login"));
-		//     }
-		// } catch (error) {
-		//     dispatch(processMessageFailedReducer(error.response.data.message));
-		//     console.error("Error response: ", error.response.data.message); // Log error to console
-		// }
-	};
+	// const handleLogout = async () => {
+	// dispatch(processStateReducer("loading"));
+	// try {
+	//     const csrfToken = document.querySelector(
+	//         'input[name="_token"]'
+	//     ).value;
+	//     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
+	//     const response = await axios.post(route("logout"), {
+	//         headers: {
+	//             "Content-Type": "multipart/form-data",
+	//         },
+	//     });
+	//     console.log(response);
+	//     if (response.status === 200) {
+	//         dispatch(processStateReducer("success"));
+	//         location.replace(route("login"));
+	//     }
+	// } catch (error) {
+	//     dispatch(processMessageFailedReducer(error.response.data.message));
+	//     console.error("Error response: ", error.response.data.message); // Log error to console
+	// 	// }
+	// };
 
 	return (
 		<Navbar className='w-[95%] mx-auto rounded-b-2xl shadow' fluid rounded>
 			<Navbar.Brand href='/'>
-				<ApplicationLogo className='object-cover h-12 w-24' />
-			</Navbar.Brand>
-			{/* <div className='flex items-center basis-1/3 gap-5'>
-				<div className='relative grow hidden md:flex'>
-					<input
-						className='border-2 border-amber-800 rounded-lg p-2 pr-10 grow h-10'
-						placeholder='Cari...'
-					/>
-					<button className='bg-amber-800 text-white px-2 py-1 rounded-md absolute end-0 mt-1 me-1'>
-						<FontAwesomeIcon icon={faSearch} />
-					</button>
+				<div className='relative w-24 h-16'>
+					<ApplicationLogo className='object-cover' alt='Logo Navbar' />
 				</div>
-			</div> */}
+			</Navbar.Brand>
 
 			<div className='flex md:order-2 items-center gap-3'>
 				<Dropdown
