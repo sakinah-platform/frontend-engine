@@ -12,7 +12,7 @@ export const Button1 = ({
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 bg-[#231F20] text-white rounded-full hover:bg-[#1e1c1d];
+      className={`px-4 py-2 bg-[#231F20] text-white rounded hover:bg-[#1e1c1d];
  transition-all ${className}`}
     >
       {text}
