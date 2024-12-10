@@ -15,8 +15,12 @@ export default {
 			colors: {
 				background: "var(--background)",
 				foreground: "var(--foreground)",
-				primary: "#606b60",
-				secondary: "#7c8b6b",
+				primary: "#016038",
+				primary2: "#023F38",
+				primary3: "#9EB2B3",
+				secondary: "#C8BEBC",
+				secondary2: "#EFEAE6",
+				tertiary: "#DC6835",
 			},
 			fontFamily: {
 				playfair: ['"Playfair DIsplay"'],
@@ -35,7 +39,9 @@ export default {
 				},
 			},
 			borderRadius: {
+				"3xl": "3rem",
 				"2xl": "2rem",
+				xl: "1rem",
 			},
 		},
 	},

@@ -21,6 +21,9 @@ type ReviewType = {
 	groom: string;
 	date: string;
 };
+type PhotoType = {
+	image: string;
+};
 
 export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 	const swiperRef = useRef<SwiperType>();
@@ -58,7 +61,7 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 								/>
 							</div>
 
-							<div className='text-white'>
+							<div className='text-white p-2'>
 								<div className=' md:text-start text-center text-xs mb-4 lg:w-56 md:w-36 max-w-80 mx-auto'>
 									&quot;{item.content}&quot;
 								</div>
@@ -74,6 +77,60 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 
 			<button
 				className={`p-4 text-secondary hover:text-primary`}
+				onClick={() => {
+					swiperRef.current?.slideNext();
+				}}>
+				<FontAwesomeIcon icon={faChevronCircleRight} />
+			</button>
+		</div>
+	);
+};
+export const SliderPhotos = ({
+	photos,
+	qty,
+}: {
+	photos: PhotoType[];
+	qty: number;
+}) => {
+	const swiperRef = useRef<SwiperType>();
+	return (
+		<div className='relative'>
+			<button
+				className='p-4 text-primary bg-gradient-to-r from-white hover:text-tertiary absolute h-full top-0 left-50 z-10 rounded-s-md text-2xl w-64 text-start'
+				onClick={() => swiperRef.current?.slidePrev()}>
+				<FontAwesomeIcon icon={faChevronCircleLeft} />
+			</button>
+			<Swiper
+				modules={[Virtual, Navigation, Pagination]}
+				onBeforeInit={(swiper) => {
+					swiperRef.current = swiper;
+				}}
+				// slidesPerView={2}
+				centeredSlides={false}
+				spaceBetween={30}
+				// navigation={true}
+				breakpoints={{
+					768: {
+						slidesPerView: qty,
+					},
+				}}
+				virtual>
+				{photos.map((item, i) => (
+					<SwiperSlide key={i} virtualIndex={i}>
+						<div className='relative mx-auto h-40 rounded-md p-2'>
+							<Image
+								fill
+								className='object-cover rounded-md'
+								src={`/photos/${item.image}`}
+								alt={item.image}
+							/>
+						</div>
+					</SwiperSlide>
+				))}
+			</Swiper>
+
+			<button
+				className={`p-4 text-primary bg-gradient-to-l from-white hover:text-tertiary absolute h-full top-0 right-0 z-10 rounded-e-md text-2xl w-64 text-end`}
 				onClick={() => {
 					swiperRef.current?.slideNext();
 				}}>
