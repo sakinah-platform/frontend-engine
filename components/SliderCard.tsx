@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faChevronCircleLeft,
 	faChevronCircleRight,
+	faQuoteLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
@@ -51,7 +52,7 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 				virtual>
 				{reviews.map((item, i) => (
 					<SwiperSlide key={i} virtualIndex={i}>
-						<div className='md:flex bg-secondary p-3 items-center justify-center rounded-lg shadow-md min-h-64'>
+						<div className='md:flex bg-primary p-3 items-center justify-center rounded-lg shadow-lg min-h-64 relative'>
 							<div className='relative lg:w-36 lg:h-36 md:w-20 md:h-20 sm:w-36 sm:h-36 max-w-32 h-32 mx-auto rounded-2xl border-2 border-white p-2'>
 								<Image
 									fill
@@ -61,9 +62,20 @@ export const SliderCard = ({ reviews }: { reviews: ReviewType[] }) => {
 								/>
 							</div>
 
+							<FontAwesomeIcon
+								icon={faQuoteLeft}
+								size='2xl'
+								className='absolute left-5 top-0 scale-y-[-1] text-white opacity-30'
+							/>
 							<div className='text-white p-2'>
-								<div className=' md:text-start text-center text-xs mb-4 lg:w-56 md:w-36 max-w-80 mx-auto'>
-									&quot;{item.content}&quot;
+								<div className='md:text-start text-center text-xs mb-4 lg:w-56 md:w-36 max-w-80 mx-auto'>
+									{/* <span className='font-alice text-2xl'>&quot;</span> */}
+									<FontAwesomeIcon
+										icon={faQuoteLeft}
+										size='lg'
+										className='me-2'
+									/>
+									{item.content}&quot;
 								</div>
 								<div className='text-center font-alice text-md leading-none'>
 									{item.bride} & {item.groom}

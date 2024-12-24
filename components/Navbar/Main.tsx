@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import ApplicationLogo from "./ApplicationLogo";
+import ApplicationLogo from "../ApplicationLogo";
 
 import { Navbar } from "flowbite-react";
 
@@ -30,9 +29,9 @@ export const MainNavbar = () => {
 	// };
 
 	// const linkNavbar = [
-	// 	{ title: "Wedding Vendor", link: "/", active: true },
-	// 	{ title: "Wedding Checklist", link: "#", active: false },
-	// 	{ title: "Wedding Calculator", link: "#", active: false },
+	//   { title: "Wedding Vendor", link: "/", active: true },
+	//   { title: "Wedding Checklist", link: "#", active: false },
+	//   { title: "Wedding Calculator", link: "#", active: false },
 	// ];
 
 	return (
@@ -48,11 +47,11 @@ export const MainNavbar = () => {
 				</div>
 			</Navbar.Brand>
 
-			<div className='flex md:order-2 items-center gap-3'>
+			{/* <div className='flex md:order-2 items-center gap-3'>
 				<button className='bg-primary2 text-white px-3 py-1 rounded-lg font-bold'>
 					Login
 				</button>
-				{/* <Dropdown
+				<Dropdown
 					arrowIcon={false}
 					inline
 					label={
@@ -73,9 +72,9 @@ export const MainNavbar = () => {
 					<Dropdown.Item>Earnings</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item>Sign out</Dropdown.Item>
-				</Dropdown> */}
+				</Dropdown>
 				<Navbar.Toggle />
-			</div>
+			</div> */}
 			{/* <Navbar.Collapse>
 				{linkNavbar.map((item, i) => (
 					<Navbar.Link href={item.link} key={i}>
@@ -89,7 +88,6 @@ export const MainNavbar = () => {
 						) : (
 							<button className='hover:border-b-4 hover:border-primary hover:text-primary pb-4 rounded-lg'>
 								{item.title}
-								<div className=' text-center pb-2 bg-primary2 mt-1 rounded-full w-12 mx-auto'></div>
 							</button>
 						)}
 					</Navbar.Link>
