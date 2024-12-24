@@ -1,4 +1,3 @@
-import { sakinahAPI } from "@/lib/sakinahAPI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -26,7 +25,7 @@ export const fetchVendorCategory = createAsyncThunk(
 	"master_data/vendor_category",
 	async (): Promise<[CategoryType]> => {
 		const response = await axios.get(
-			`${sakinahAPI}/master_data/vendor_category`
+			`${process.env.sakinahAPI}/master_data/vendor_category`
 		);
 		return response.data.results;
 	}

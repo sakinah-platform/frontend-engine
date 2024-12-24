@@ -1,4 +1,3 @@
-import { sakinahAPI } from "@/lib/sakinahAPI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -22,7 +21,9 @@ const initialState: GenericState<CityType> = {
 export const fetchCity = createAsyncThunk(
 	"master_data/city",
 	async (): Promise<[CityType]> => {
-		const response = await axios.get(`${sakinahAPI}/master_data/city`);
+		const response = await axios.get(
+			`${process.env.sakinahAPI}/master_data/city`
+		);
 		return response.data.results;
 	}
 );

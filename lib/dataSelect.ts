@@ -21,17 +21,38 @@ export function dataDropdown(
 	key1: string = "id",
 	key2: string = "title",
 	alt1: string = "name"
-): { id: unknown; label: string }[] {
-	const dataArray = data.map((item) => ({
-		id: item[key1],
-		label: key2.includes(".")
+): { id: number; label: string }[] {
+	const dataArray = data.map((item) => {
+		const id = Number(item[key1]); // Ensure id is a number
+		const label = key2.includes(".")
 			? (getObjectValue(item, key2) as string) ||
 			  (getObjectValue(item, alt1) as string)
-			: (item[key2] as string) || (item[alt1] as string),
-	}));
+			: (item[key2] as string) || (item[alt1] as string);
+
+		return {
+			id: id || 0, // Use 0 as fallback if id is invalid
+			label, // Provide fallback label
+		};
+	});
 
 	return sortData(dataArray);
 }
+// export function dataDropdown(
+// 	data: DataItem[],
+// 	key1: string = "id",
+// 	key2: string = "title",
+// 	alt1: string = "name"
+// ): { id: unknown; label: string }[] {
+// 	const dataArray = data.map((item) => ({
+// 		id: item[key1],
+// 		label: key2.includes(".")
+// 			? (getObjectValue(item, key2) as string) ||
+// 			  (getObjectValue(item, alt1) as string)
+// 			: (item[key2] as string) || (item[alt1] as string),
+// 	}));
+
+// 	return sortData(dataArray);
+// }
 
 function getObjectValue(obj: DataItem, path: string): unknown {
 	const keys = path.split(".");

@@ -1,4 +1,3 @@
-import { sakinahAPI } from "@/lib/sakinahAPI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -9,6 +8,8 @@ interface VendorType {
 	name: string;
 	profile_image: string;
 	starting_price: number;
+	category: string;
+	city: string;
 }
 
 interface GenericState<T> {
@@ -25,10 +26,32 @@ const initialState: GenericState<VendorType> = {
 
 export const fetchVendor = createAsyncThunk(
 	"master_data/vendors",
-	async (): Promise<[VendorType]> => {
-		const response = await axios.get(`${sakinahAPI}/master_data/vendors`);
+	async (
+		params?: Record<string, string | number | undefined>
+	): Promise<[VendorType]> => {
+		// Construct query parameters dynamically
+		const queryParams = new URLSearchParams();
+
+		if (params) {
+			Object.entries(params).forEach(([key, value]) => {
+				if (value !== undefined) queryParams.append(key, value.toString());
+			});
+		}
+
+		const url = `${process.env.sakinahAPI}/master_data/vendors${
+			queryParams.toString() ? `/?${queryParams.toString()}` : ""
+		}`;
+
+		const response = await axios.get(url);
 		return response.data.results;
 	}
+	// async (): Promise<[VendorType]> => {
+	// 	// const response = await axios.get(`${sakinahAPI}/master_data/vendors`);
+	// 	const response = await axios.get(
+	// 		`${process.env.sakinahAPI}/master_data/vendors`
+	// 	);
+	// 	return response.data.results;
+	// }
 );
 
 const vendorSlice = createSlice({

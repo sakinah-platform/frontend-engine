@@ -35,13 +35,16 @@ export default function ListVendor() {
 		dispatch(fetchVendorCategory());
 		dispatch(fetchVendor());
 		dispatch(fetchCity());
+		// console.log(vendor);
 	}, [dispatch]);
 
 	interface FilterValues {
 		nama: string;
-		kota: number[];
-		harga: number[];
-		category: number[];
+		// harga: number[];
+		kota: number | null;
+		category: number | null;
+		// kota: number[];
+		// category: number[];
 	}
 	// const kota = [
 	// 	{ id: 1, name: "Garut" },
@@ -131,11 +134,23 @@ export default function ListVendor() {
 							<Formik<FilterValues>
 								initialValues={{
 									nama: "",
-									kota: [],
-									harga: [],
-									category: [],
+									// harga: [],
+									kota: 0,
+									category: 0,
+									// kota: [],
+									// category: [],
 								}}
-								onSubmit={(values) => console.log(values)}>
+								onSubmit={(values) => {
+									console.log(values);
+									const params: Record<string, string | number | undefined> = {
+										...(values.nama ? { search: values.nama } : {}),
+										...(values.kota ? { city: values.kota } : {}),
+										...(values.category ? { category: values.category } : {}),
+									};
+
+									// Dispatch the fetchVendor action with dynamic params
+									dispatch(fetchVendor(params));
+								}}>
 								{({
 									values,
 									// errors,
@@ -185,9 +200,9 @@ export default function ListVendor() {
 															// },
 														].map((item, i) => {
 															// Narrow the type to ensure TypeScript treats it as number[]
-															const dropdownValues = values[
-																item.idName as keyof Omit<FilterValues, "nama">
-															] as number[];
+															// const dropdownValues = values[
+															// 	item.idName as keyof Omit<FilterValues, "nama">
+															// ] as number[];
 
 															return (
 																<DropdownWithSearch
@@ -199,8 +214,18 @@ export default function ListVendor() {
 																		"name"
 																	)}
 																	idName={item.idName}
-																	values={dropdownValues} // Now explicitly typed as number[]
+																	// values={dropdownValues} // Now explicitly typed as number[]
+																	values={
+																		typeof values[
+																			item.idName as keyof FilterValues
+																		] === "number"
+																			? (values[
+																					item.idName as keyof FilterValues
+																			  ] as number)
+																			: null
+																	} // Now explicitly typed as number[]
 																	setFieldValue={setFieldValue}
+																	// setFieldValue={handleChange}
 																	isOpen={openDropdown === item.idName} // Check if this dropdown should be open
 																	setOpenDropdown={() =>
 																		setOpenDropdown(item.idName)
@@ -257,8 +282,8 @@ export default function ListVendor() {
 														<div className='font-alice text-lg bg-white rounded-full -ms-4 p-2 w-[95%] border-t-2 border-primary'>
 															<span className='ms-2'>{item.name}</span>
 														</div>
-														<p>kategori {item.id}</p>
-														<p>Kota {item.id}</p>
+														<p>{item.category}</p>
+														<p>{item.city}</p>
 														{/* ## RATING
 											<p className='text-tertiary'>
 												{Array.from({ length: 5 }).map((item, i) => (
