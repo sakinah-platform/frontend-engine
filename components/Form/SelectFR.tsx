@@ -5,7 +5,7 @@ type Option = {
 	label: string;
 };
 
-interface Select2RSProps {
+interface Select2FRProps {
 	className?: string;
 	label?: string;
 	id: string;
@@ -20,9 +20,10 @@ interface Select2RSProps {
 	) => void;
 	values: SingleValue<Option> | MultiValue<Option>;
 	placeholder?: string;
+	labelBold?: boolean;
 }
 
-const Select2RS: React.FC<Select2RSProps> = ({
+const Select2FR: React.FC<Select2FRProps> = ({
 	className = "col-md-6 col-sm-6",
 	label,
 	id,
@@ -35,11 +36,14 @@ const Select2RS: React.FC<Select2RSProps> = ({
 	handleBlur,
 	values,
 	placeholder = "",
+	labelBold = false,
 }) => {
 	return (
 		<div className={className}>
 			{label && (
-				<label htmlFor={id} className='form-label'>
+				<label
+					htmlFor={id}
+					className={`form-label ${labelBold ? "font-bold" : ""}`}>
 					{label}
 				</label>
 			)}
@@ -67,4 +71,4 @@ const Select2RS: React.FC<Select2RSProps> = ({
 	);
 };
 
-export { Select2RS };
+export { Select2FR };

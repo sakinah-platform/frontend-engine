@@ -4,17 +4,19 @@ import processStateSlice from "./redux/slicer/ProcessSlicer";
 import vendorSlice from "./redux/slicer/VendorSlicer";
 import citySlice from "./redux/slicer/CitySlicer";
 import detailVendorSlicer from "./redux/slicer/VendorDetailSlicer";
+import authSlice from "./redux/slicer/AuthSlicer";
 
 export const makeStore = () => {
-  return configureStore({
-    reducer: {
-      categories: categorySlice,
-      vendors: vendorSlice,
-      cities: citySlice,
-      processState: processStateSlice,
-      detailVendor: detailVendorSlicer,
-    },
-  });
+	return configureStore({
+		reducer: {
+			auth: authSlice,
+			categories: categorySlice,
+			vendors: vendorSlice,
+			cities: citySlice,
+			processState: processStateSlice,
+			detailVendor: detailVendorSlicer,
+		},
+	});
 };
 
 // Infer the type of makeStore

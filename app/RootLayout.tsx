@@ -5,6 +5,7 @@ import StoreProvider from "../lib/redux/StoreProvider";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+// import { SessionProvider } from "next-auth/react";
 
 // const geistSans = localFont({
 // 	src: "../components/fonts/GeistVF.woff",
@@ -61,7 +62,9 @@ export default function ClientRootLayout({
 					</div>
 				</div>
 			) : (
+				// <SessionProvider>
 				<StoreProvider>{children}</StoreProvider>
+				// </SessionProvider>
 			)}
 		</div>
 	);
