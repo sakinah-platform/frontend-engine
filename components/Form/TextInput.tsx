@@ -1,9 +1,4 @@
-import React, {
-	forwardRef,
-	useEffect,
-	// useImperativeHandle,
-	useRef,
-} from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 
 // Define the props for the TextInput component
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -13,13 +8,12 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-	({ type = "text", className = "", isFocused = false, ...props }) => {
+	({ type = "text", className = "", isFocused = false, ...props }, ref) => {
 		const localRef = useRef<HTMLInputElement | null>(null);
 
 		// Expose a `focus` method through the forwarded ref
-		// useImperativeHandle(ref, () => ({
-		// 	focus: () => localRef.current?.focus(),
-		// }));
+
+		React.useImperativeHandle(ref, () => localRef.current as HTMLInputElement);
 
 		// Focus the input if `isFocused` is true on mount or when it changes
 		useEffect(() => {
@@ -33,7 +27,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 				{...props}
 				type={type}
 				className={
-					"rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 " +
+					"rounded-md bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 " +
 					className
 				}
 				ref={localRef}

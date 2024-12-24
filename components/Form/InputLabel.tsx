@@ -13,9 +13,7 @@ export default function InputLabel({
 	...props
 }: InputLabelProps): JSX.Element {
 	return (
-		<label
-			{...props}
-			className={`block text-sm font-medium text-gray-700 ${className}`}>
+		<label {...props} className={`block text-gray-700 ${className}`}>
 			{value || children}
 		</label>
 	);

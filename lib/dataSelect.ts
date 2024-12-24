@@ -1,4 +1,4 @@
-type DataItem = Record<string, unknown>;
+type DataItem = Record<string | number, unknown>;
 
 export default function dataSelect(
 	data: DataItem[],
@@ -7,7 +7,10 @@ export default function dataSelect(
 	alt1: string = "name"
 ): { value: unknown; label: string }[] {
 	const dataArray = data.map((item) => ({
-		value: item[key1],
+		value:
+			typeof item[key1] == "number"
+				? Number(item[key1])
+				: typeof item[key1] == "string" && String(item[key1]),
 		label: key2.includes(".")
 			? (getObjectValue(item, key2) as string) ||
 			  (getObjectValue(item, alt1) as string)
