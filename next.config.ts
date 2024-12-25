@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+	env: {
+		sakinahAPI: "https://sakinah-be.hafiyyansayy.id"
+	},
 	images: {
 		remotePatterns: [
 			{
