@@ -2,7 +2,7 @@
 
 import ApplicationLogo from "./ApplicationLogo";
 
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 
 export const MainNavbar = () => {
 	// const handleLogout = async () => {
