@@ -5,8 +5,12 @@
 :root {
 	--background: #f8fbf7;
 	--foreground: #171717;
-	--primary: #606b60;
-	--secondary: #7c8b6b;
+	--primary: #6d9773;
+	--primary2: #0c3b2e;
+	--primary3: #9eb2b3;
+	--secondary: #c8bebc;
+	--secondary2: #efeae6;
+	--tertiary: #ffba00;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -16,6 +20,31 @@
 	}
 } */
 
+/* SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+	height: 7px;
+	opacity: 0.1;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: var(--primary);
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: var(--primary2);
+}
+
 body {
 	color: var(--foreground);
 	background: var(--background);
@@ -24,6 +53,12 @@ body {
 
 @layer components {
 	.btn-primary {
-		@apply text-white bg-primary hover:bg-secondary focus:ring-4 focus:ring-amber-700 rounded-lg text-sm md:text-base px-3 py-2;
+		@apply transition ease-in text-white bg-primary hover:bg-primary2 focus:ring-2 focus:ring-primary2 rounded-lg text-sm md:text-base px-3 py-2;
+	}
+	.btn-outline-primary {
+		@apply transition ease-in text-primary border-2 border-primary hover:text-white hover:bg-primary focus:ring-2 focus:ring-primary2 rounded-lg text-sm md:text-base px-3 py-2;
+	}
+	.btn-outline-primary2 {
+		@apply transition ease-in text-primary2 border-2 border-primary2 hover:text-white hover:bg-primary2 focus:ring-2 focus:ring-primary2 rounded-lg text-sm md:text-base px-3 py-2;
 	}
 }
