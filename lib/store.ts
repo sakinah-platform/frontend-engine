@@ -1,10 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import categorySlice from "./redux/slicer/CategorySlicer";
+import processStateSlice from "./redux/slicer/ProcessSlicer";
+import vendorSlice from "./redux/slicer/VendorSlicer";
+import citySlice from "./redux/slicer/CitySlicer";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       categories: categorySlice,
+      vendors: vendorSlice,
+      cities: citySlice,
+      processState: processStateSlice,
     },
   });
 };

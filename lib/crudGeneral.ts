@@ -1,18 +1,23 @@
 import axios, { AxiosResponse } from "axios";
 
-export const fetchData = async (
-	start: () => void = () => null,
+type Action<T = unknown> = { type: string; payload?: T };
+
+export const fetchData = async <T>(
+	start: () => Action = () => ({ type: "START" }),
 	route: string,
-	slicer: (data: any) => any = () => null,
-	failure: (error: any) => void = () => null,
-	dispatch: (action: any) => void = () => null
-): Promise<void> => {
+	slicer: (data: T) => Action<T> = () => ({ type: "SUCCESS" }),
+	failure: (error: string) => Action = (error: string) => ({
+		type: "FAILURE",
+		payload: error,
+	}),
+	dispatch: (action: Action) => void = () => null
+): Promise<T | void> => {
 	if (start) {
 		dispatch(start());
 	}
 
 	try {
-		const response: AxiosResponse = await axios.get(`/api/${route}`);
+		const response: AxiosResponse<T> = await axios.get(`/api/${route}`);
 		if (response.status !== 200) {
 			throw new Error("Failed to fetch categories");
 		}
@@ -30,19 +35,22 @@ export const fetchData = async (
 	}
 };
 
-export const postData = async (
-	dataForm: Record<string, any>, // Use a generic object for form data
-	start: () => void = () => null, // Function to handle the start of the request
+export const postData = async <T>(
+	dataForm: Record<string, unknown>, // Use a generic object for form data
+	start: () => Action = () => ({ type: "START" }), // Function to handle the start of the request
 	route: string, // Endpoint for the POST request
-	slicer: (data: any) => any = () => null, // Function to process the response data
-	failure: (error: any) => void = () => null, // Function to handle errors
-	dispatch: (action: any) => void = () => null // Function to dispatch actions
-): Promise<void> => {
+	slicer: (data: T) => Action<T> = () => ({ type: "SUCCESS" }),
+	failure: (error: string) => Action = (error: string) => ({
+		type: "FAILURE",
+		payload: error,
+	}), // Function to handle errors
+	dispatch: (action: Action) => void = () => null // Function to dispatch actions
+): Promise<T | void> => {
 	if (start) {
 		dispatch(start());
 	}
 	try {
-		const response: AxiosResponse = await axios.post(
+		const response: AxiosResponse<T> = await axios.post(
 			`https://api.example.com/${route}`,
 			dataForm
 		);
@@ -60,14 +68,14 @@ export const postData = async (
 	}
 };
 
-export const errorAxiosHandling = (error: any): string => {
-	let message;
+export const errorAxiosHandling = (error: unknown): string => {
+	let message: string;
 	if (axios.isAxiosError(error)) {
 		console.error("Axios error:", error.message);
 		message = error.message;
 	} else {
-		console.error("General error:", error.message);
-		message = error.message;
+		console.error("Unexpected error:", error);
+		message = "An unexpected error occurred.";
 	}
 
 	return message;
