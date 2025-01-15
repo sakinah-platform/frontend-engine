@@ -3,6 +3,7 @@ import categorySlice from "./redux/slicer/CategorySlicer";
 import processStateSlice from "./redux/slicer/ProcessSlicer";
 import vendorSlice from "./redux/slicer/VendorSlicer";
 import citySlice from "./redux/slicer/CitySlicer";
+import detailVendorSlicer from "./redux/slicer/VendorDetailSlicer";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       vendors: vendorSlice,
       cities: citySlice,
       processState: processStateSlice,
+      detailVendor: detailVendorSlicer,
     },
   });
 };
