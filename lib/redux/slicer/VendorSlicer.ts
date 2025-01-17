@@ -1,16 +1,46 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface VendorType {
+export interface TypeVendor {
 	// [x: string]: string;
 	// title: string;
 	id: number;
 	name: string;
-	profile_image: string;
-	starting_price: number;
+	description: string;
+	about: string;
 	category: string;
 	city: string;
+	email: string;
+	facebook: string;
+	instagram: string;
+	tiktok: string;
+	youtube: string;
+	profile_image: string;
+	availability: boolean;
+	// visibilty: string;
+	visibility: "private" | "public";
+	galleries: TypeVendorGalleries[];
+	packages: TypeVendorPackages[];
+	schedules: TypeVendorSchedules[];
+	// starting_price: number;
+	[key: string]: any;
 }
+
+type TypeVendorGalleries = {
+	id: number;
+	image: string;
+};
+type TypeVendorPackages = {
+	id: number;
+	name: string;
+	price: number;
+	description: string;
+};
+type TypeVendorSchedules = {
+	day: string;
+	start_time: string;
+	end_time: string;
+};
 
 interface GenericState<T> {
 	vendor: T[];
@@ -18,7 +48,7 @@ interface GenericState<T> {
 	error: string | null;
 }
 
-const initialState: GenericState<VendorType> = {
+const initialState: GenericState<TypeVendor> = {
 	vendor: [],
 	loadingVendor: false,
 	error: null,
@@ -26,32 +56,32 @@ const initialState: GenericState<VendorType> = {
 
 export const fetchVendor = createAsyncThunk(
 	"master_data/vendors",
-	async (
-		params?: Record<string, string | number | undefined>
-	): Promise<[VendorType]> => {
+	async (params?: {
+		basePath?: string | number; // Optional base path
+		queryParams?: Record<string, string | number | undefined>; // Query parameters
+	}): Promise<[TypeVendor]> => {
+		const { basePath, queryParams } = params || {};
+
 		// Construct query parameters dynamically
-		const queryParams = new URLSearchParams();
+		const queryString = queryParams
+			? new URLSearchParams(
+					Object.entries(queryParams).reduce((acc, [key, value]) => {
+						if (value !== undefined) acc[key] = value.toString();
+						return acc;
+					}, {} as Record<string, string>)
+			  ).toString()
+			: "";
 
-		if (params) {
-			Object.entries(params).forEach(([key, value]) => {
-				if (value !== undefined) queryParams.append(key, value.toString());
-			});
-		}
-
+		// Construct the final URL
 		const url = `${process.env.sakinahAPI}/master_data/vendors${
-			queryParams.toString() ? `/?${queryParams.toString()}` : ""
-		}`;
+			basePath ? `/${basePath}` : ""
+		}${queryString ? `?${queryString}` : ""}`;
 
 		const response = await axios.get(url);
-		return response.data.results;
+		// console.log(basePath ? "ok" : queryString, url);
+
+		return basePath ? response.data : response.data.results;
 	}
-	// async (): Promise<[VendorType]> => {
-	// 	// const response = await axios.get(`${sakinahAPI}/master_data/vendors`);
-	// 	const response = await axios.get(
-	// 		`${process.env.sakinahAPI}/master_data/vendors`
-	// 	);
-	// 	return response.data.results;
-	// }
 );
 
 const vendorSlice = createSlice({
@@ -61,7 +91,7 @@ const vendorSlice = createSlice({
 		start(state) {
 			state.loadingVendor = true;
 		},
-		vendorReducer(state, action: PayloadAction<VendorType[]>) {
+		vendorReducer(state, action: PayloadAction<TypeVendor[]>) {
 			state.loadingVendor = false;
 			state.vendor = [...state.vendor, ...action.payload];
 		},
@@ -75,7 +105,7 @@ const vendorSlice = createSlice({
 			state.loadingVendor = true;
 		});
 		builder.addCase(fetchVendor.fulfilled, (state, action) => {
-			console.log(action.payload);
+			// console.log(action.payload);
 			state.vendor = action.payload;
 
 			state.loadingVendor = false;

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Formik } from "formik";
 import Image from "next/image";
 import { SliderPhotos } from "@/components/SliderCard";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DropdownWithSearch } from "@/components/MainDropdown";
 import { dataDropdown } from "@/lib/dataSelect";
 import { MainNavPagination } from "@/components/MainNavPagination";
@@ -17,116 +17,238 @@ import { AppDispatch, RootState } from "@/lib/store";
 import { fetchVendorCategory } from "@/lib/redux/slicer/CategorySlicer";
 import { fetchVendor } from "@/lib/redux/slicer/VendorSlicer";
 import { fetchCity } from "@/lib/redux/slicer/CitySlicer";
+import ApplicationLogo from "@/components/ApplicationLogo";
+import ListSideNav from "@/components/Navbar/ListSideNav";
+import { initializeButtonNavActive } from "@/lib/handleArray";
+import { Avatar, Dropdown } from "flowbite-react";
+import Biodata from "./Layer/Biodata";
 
-export default function ListVendor() {
-	const [currentPage, setCurrentPage] = useState(1);
-	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+export default function AdminVendor({
+	params,
+}: {
+	params: Promise<{ id: number | string }>;
+}) {
+	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		(async () => {
+			try {
+				// Wait for the idVendor promise to resolve
+				const { id } = await params;
+
+				// Dispatch the fetchVendor action with the resolved idVendor
+				dispatch(fetchVendor({ basePath: id }));
+			} catch (error) {
+				console.error("Failed to fetch vendor:", error);
+			}
+		})();
+	}, [params, dispatch]);
+
+	const { vendor, loadingVendor } = useSelector(
+		(state: RootState) => state.vendors
+	);
+	const selectedVendor = Array.isArray(vendor) ? vendor[0] : vendor;
+	const listNav = [
+		{
+			label: "Menu",
+			subNav: [
+				{
+					id: 1,
+					text: "Profil",
+					component:
+						vendor && !loadingVendor ? (
+							<Biodata vendor={selectedVendor} />
+						) : null,
+					// component: "null",
+				},
+				// {
+				// 	id: 2,
+				// 	text: "Galeri",
+				// 	component: "null",
+				// 	// component: <DataKerja org={biodata ?? org} regulator={regulator} />,
+				// },
+				{
+					id: 3,
+					text: "Paket",
+					component: "null",
+					// component: <Dokumen org={biodata ?? org} />,
+				},
+			],
+		},
+	];
+	// const [currentPage, setCurrentPage] = useState(1);
+	// const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+	const [buttonNavActive, setButtonNavActive] = useState(() =>
+		initializeButtonNavActive(listNav[0].subNav)
+	);
 
 	const { category, loadingCategory } = useSelector(
 		(state: RootState) => state.categories
 	);
-	const { vendor, loadingVendor } = useSelector(
-		(state: RootState) => state.vendors
-	);
+	// const { vendor, loadingVendor } = useSelector(
+	// 	(state: RootState) => state.vendors
+	// );
 	const { city, loadingCity } = useSelector((state: RootState) => state.cities);
-	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
 		dispatch(fetchVendorCategory());
-		dispatch(fetchVendor());
+		// dispatch(fetchVendor());
 		dispatch(fetchCity());
 		// console.log(vendor);
 	}, [dispatch]);
 
-	interface FilterValues {
-		nama: string;
-		// harga: number[];
-		kota: number | null;
-		category: number | null;
-		// kota: number[];
-		// category: number[];
-	}
-	// const kota = [
-	// 	{ id: 1, name: "Garut" },
-	// 	{ id: 2, name: "Kab. Tasikmalaya" },
-	// 	{ id: 3, name: "Kota Tasikmalaya" },
-	// ];
-	// const harga = [
-	// 	{ id: 1, nama: "$" },
-	// 	{ id: 2, nama: "$$" },
-	// 	{ id: 3, nama: "$$$" },
-	// ];
-	// const category = [
-	// 	{ id: 1, title: "Attire" },
-	// 	{ id: 2, title: "Catering" },
-	// 	{ id: 3, title: "Souvenir" },
-	// 	{ id: 4, title: "Hantaran" },
-	// 	{ id: 5, title: "Hotel" },
-	// 	{ id: 6, title: "Convention Hall" },
-	// 	{ id: 7, title: "Decoration" },
-	// 	{ id: 8, title: "Entertain" },
-	// 	{ id: 9, title: "Garden" },
-	// 	{ id: 10, title: "Invitation" },
-	// 	{ id: 11, title: "Live Streaming" },
-	// 	{ id: 12, title: "Mahar" },
-	// 	{ id: 13, title: "MC" },
-	// 	{ id: 14, title: "Photographer" },
-	// 	{ id: 15, title: "Videographer" },
-	// 	{ id: 16, title: "Wedding Organizer" },
-	// ];
+	// const [showNav, setShowNav] = useState(screen > 450 ? true : false);
+	// const [showNavDropdown, setShowNavDropdown] = useState(false);
 
-	const photos = [
-		{
-			title: "Every Venues and Vendors in town are ready to serve you",
-			desc: "This is the Description for Wedding Venues and Vendors feature",
-			link: "#",
-			image: "photo-1.png",
+	const navigateToTab = (index: number) => {
+		nonActiveButtonNav(setButtonNavActive, index);
+		activeButtonNav(setButtonNavActive, index);
+		// setShowNav(false);
+	};
+	const activeButtonNav = useCallback(
+		(
+			setButton: React.Dispatch<React.SetStateAction<Record<number, boolean>>>,
+			navIndex: number
+		) => {
+			setButton((prevVisibility) => ({
+				...prevVisibility,
+				[navIndex]: true,
+			}));
 		},
-		{
-			title: "A fairy-tale wedding does not need to be expensive",
-			desc: "This is the Description for Wedding Venues and Vendors feature",
-			link: "#",
-			image: "photo-2.png",
+		[]
+	);
+
+	const nonActiveButtonNav = useCallback(
+		(
+			setButton: React.Dispatch<React.SetStateAction<Record<number, boolean>>>,
+			navIndex: number
+		) => {
+			setButton((prevVisibility) =>
+				Object.fromEntries(
+					Object.keys(prevVisibility).map((key) => [
+						Number(key),
+						Number(key) === navIndex ? true : false,
+					])
+				)
+			);
 		},
-		{
-			title: "Plan your wish for a fairy-tale wedding",
-			desc: "This is the Description for Wedding Venues and Vendors feature",
-			link: "#",
-			image: "photo-3.png",
-		},
-		{
-			title: "Every Venues and Vendors in town are ready to serve you",
-			desc: "This is the Description for Wedding Venues and Vendors feature",
-			link: "#",
-			image: "photo-1.png",
-		},
-		{
-			title: "A fairy-tale wedding does not need to be expensive",
-			desc: "This is the Description for Wedding Venues and Vendors feature",
-			link: "#",
-			image: "photo-2.png",
-		},
-		{
-			title: "Plan your wish for a fairy-tale wedding",
-			desc: "This is the Description for Wedding Venues and Vendors feature",
-			link: "#",
-			image: "photo-3.png",
-		},
-	];
+		[]
+	);
 
 	return (
 		<>
-			<MainNavbar />
+			<div className='grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-4 bg-white'>
+				<div className='justify-center rounded-lg mt-2'>
+					<div className='p-2'>
+						<div className='text-center mx-auto mx-3 relative w-36 h-8 m-4 ms-8'>
+							<ApplicationLogo
+								className='object-cover'
+								alt='Logo Sakinah Secondary'
+							/>
+						</div>
+
+						<div className='absolute end-10 top-5 md:order-2 items-center gap-3'>
+							<Dropdown
+								arrowIcon={false}
+								inline
+								label={
+									<div className='p-1 rounded-full border border-white shadow-lg'>
+										<Avatar
+											className='object-cover rounded-full p-1 border border-primary2 shadow-lg'
+											alt={selectedVendor?.name}
+											img={selectedVendor?.profile_image}
+											rounded
+										/>
+									</div>
+								}>
+								<Dropdown.Header>
+									<span className='block text-sm'>Nama Vendor</span>
+									{/* <span className='block truncate text-sm font-medium'>
+										name@flowbite.com
+									</span> */}
+								</Dropdown.Header>
+								<Dropdown.Item>
+									<a href='/' target='_blank' rel='noopener noreferrer'>
+										Home
+									</a>
+								</Dropdown.Item>
+								{/* <Dropdown.Item>Settings</Dropdown.Item> */}
+								{/* <Dropdown.Item>Earnings</Dropdown.Item> */}
+								<Dropdown.Divider />
+								<Dropdown.Item>Sign out</Dropdown.Item>
+							</Dropdown>
+						</div>
+						<ul className='space-y-2 font-medium pt-2 hidden lg:block'>
+							{listNav.map((item, i) => (
+								<div key={i}>
+									<span className='text-primary3 font-bold ms-5'>
+										{item.label}
+									</span>
+									{item.subNav.map((items, j) => (
+										<ListSideNav
+											route={() => {
+												navigateToTab(j);
+											}}
+											text={items.text}
+											// icon={item.icon}
+											active={buttonNavActive[j]}
+											key={j}
+										/>
+									))}
+								</div>
+							))}
+						</ul>
+						<div className='block lg:hidden'>
+							{/* <select
+                                    className="bg-neutral-50 border-b-4 border-b-sky-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    onChange={(e) => {
+                                        navigateToTab(e.target.value);
+                                    }}
+                                    value={buttonNavActive[0]}
+                                >
+                                    {listNav.length > 0 &&
+                                        listNav.map((item, i) => (
+                                            <option value={i} key={i}>
+                                                {item.text}
+                                            </option>
+                                        ))}
+                                </select> */}
+						</div>
+					</div>
+				</div>
+				{/* <ToastProses
+                        data={toastState}
+                        handleClose={() => dispatch(toastCloseReducer())}
+                    /> */}
+
+				<div className='justify-center bg-background rounded-lg shadow p-4 lg:col-span-4 xl:col-span-5'>
+					{listNav[0].subNav.map(
+						(item, i) =>
+							buttonNavActive[i] && (
+								<div className='md:mt-8' key={i}>
+									<span className='text-primary2 font-bold text-lg'>
+										{item.text}
+									</span>
+									<br />
+									<div className='mt-5'>
+										{loadingVendor ? "loading" : item.component}
+									</div>
+								</div>
+							)
+					)}
+				</div>
+			</div>
+			{/* <MainNavbar />
 			<div className='px-3 py-2 lg:container mx-auto'>
 				<div className='md:mx-16 mt-16 mb-8'>
 					<UpReveal>
-						{/* <BannerWithText url='/banner/bg-2.png'>
+						<BannerWithText url='/banner/bg-2.png'>
 							<div className='pe-12 p-12 lg:p-28 font-bold text-lg lg:text-2xl'>
 								Look! The Heaven Near Us
 								<br />
 								Let&apos;s explore our venues
 							</div>
-						</BannerWithText> */}
+						</BannerWithText>
 						<div className='mt-12 h-40 rounded-lg'>
 							<SliderPhotos photos={photos} qty={3} />
 						</div>
@@ -141,15 +263,15 @@ export default function ListVendor() {
 									// category: [],
 								}}
 								onSubmit={(values) => {
+									console.log(values);
 									const params: Record<string, string | number | undefined> = {
 										...(values.nama ? { search: values.nama } : {}),
 										...(values.kota ? { city: values.kota } : {}),
 										...(values.category ? { category: values.category } : {}),
 									};
 
-									// console.log(params);
 									// Dispatch the fetchVendor action with dynamic params
-									dispatch(fetchVendor({ queryParams: params }));
+									dispatch(fetchVendor(params));
 								}}>
 								{({
 									values,
@@ -270,13 +392,13 @@ export default function ListVendor() {
 													<div className='relative p-5 -mt-10 text-sm capitalize'>
 														<div className='absolute top-10 right-0 max-w-[20%]'>
 															<div className='bg-tertiary p-1 rounded-bl-xl w-8 h-3'>
-																{/* <div className='text-white text-center'>
+																<div className='text-white text-center'>
 															{Array.from({ length: (i % 3) + 1 }).map(
 																(_, j) => (
 																	<FontAwesomeIcon icon={faDollar} key={j} />
 																)
 															)}
-														</div> */}
+														</div>
 															</div>
 														</div>
 														<div className='font-alice text-lg bg-white rounded-full -ms-4 p-2 w-[95%] border-t-2 border-primary'>
@@ -284,13 +406,13 @@ export default function ListVendor() {
 														</div>
 														<p>{item.category}</p>
 														<p>{item.city}</p>
-														{/* ## RATING
+														## RATING
 											<p className='text-tertiary'>
 												{Array.from({ length: 5 }).map((item, i) => (
 													<FontAwesomeIcon key={i} icon={faStar} />
 												))}
 											</p>
-											<p>5/5 (1.999 Ulasan)</p> */}
+											<p>5/5 (1.999 Ulasan)</p>
 														<button className='transition ease-out btn-outline-primary2 w-[90%] rounded-br-2xl text-sm mt-2'>
 															Daftar Harga
 														</button>
@@ -315,7 +437,7 @@ export default function ListVendor() {
 					</UpReveal>
 				</div>
 				<Footer />
-			</div>
+			</div> */}
 		</>
 	);
 }

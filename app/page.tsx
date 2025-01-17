@@ -6,7 +6,7 @@ import {
 } from "@/components/MotionTemplate";
 import { SliderCard } from "@/components/SliderCard";
 import { useEffect } from "react";
-import { MainNavbar } from "@/components/MainNavbar";
+import { MainNavbar } from "@/components/Navbar/Main";
 import { useDispatch, useSelector } from "react-redux";
 // import { categoryReducer } from "../lib/redux/slicer/CategorySlicer";
 import { AppDispatch, RootState } from "../lib/store";

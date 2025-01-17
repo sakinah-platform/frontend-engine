@@ -1,6 +1,6 @@
 "use client";
 
-import ApplicationLogo from "./ApplicationLogo";
+import ApplicationLogo from "../ApplicationLogo";
 
 import { Navbar } from "flowbite-react";
 
