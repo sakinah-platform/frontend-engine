@@ -28,11 +28,11 @@ export const MainNavbar = () => {
   // 	// }
   // };
 
-  const linkNavbar = [
-    { title: "Wedding Vendor", link: "/", active: true },
-    { title: "Wedding Checklist", link: "#", active: false },
-    { title: "Wedding Calculator", link: "#", active: false },
-  ];
+  // const linkNavbar = [
+  //   { title: "Wedding Vendor", link: "/", active: true },
+  //   { title: "Wedding Checklist", link: "#", active: false },
+  //   { title: "Wedding Calculator", link: "#", active: false },
+  // ];
 
   return (
     <Navbar

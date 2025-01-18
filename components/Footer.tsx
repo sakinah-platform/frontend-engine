@@ -1,5 +1,5 @@
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faCopyright, faGlobe, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCopyright, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 

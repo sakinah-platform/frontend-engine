@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { object } from "yup";
 
 export interface DetailVendorType {
-  [key: string]: any;
+  [key: string]: number | string | boolean;
   id: number;
   name: string;
   description: string;

@@ -157,7 +157,7 @@ export default function Home() {
                       categories: [] as number[],
                     }}
                     // validationSchema={{}}
-                    onSubmit={(values) => {
+                    onSubmit={() => {
                       // same shape as initial values
                       location.replace("/vendor/list");
                     }}

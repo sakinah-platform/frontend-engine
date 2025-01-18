@@ -19,7 +19,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -177,14 +176,11 @@ export default function DetailVendor({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
   const [visibleItems, setVisibleItems] = useState(3);
   const [currentPackageIndex, setCurrentPackageIndex] = useState(0);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const router = useRouter();
 
   // const dispatch = useDispatch<AppDispatch>();
   const { detailVendor, loadingDetailVendor } = useSelector(
@@ -213,7 +209,6 @@ export default function DetailVendor({
 
   const handleProductClick = (index: number) => {
     setCurrentPackageIndex(index);
-    setSelectedProduct(index);
     openModal();
   };
 
