@@ -345,26 +345,36 @@ export default function DetailVendor({
             ))}
           </div> */}
           <div>
-            <div className="flex items-center gap-4 mb-4">
-              <FontAwesomeIcon icon={dataContact[0].icon} />
-              <span>{selectedDetailVendor?.instagram ?? "@pinehouse"}</span>
-            </div>
-            <div className="flex items-center gap-4 mb-4">
-              <FontAwesomeIcon icon={dataContact[1].icon} />
-              <span>{selectedDetailVendor?.facebook ?? "@pinehouse"}</span>
-            </div>
-            <div className="flex items-center gap-4 mb-4">
-              <FontAwesomeIcon icon={dataContact[2].icon} />
-              <span>{selectedDetailVendor?.tiktok ?? "@pinehouse"}</span>
-            </div>
-            <div className="flex items-center gap-4 mb-4">
-              <FontAwesomeIcon icon={dataContact[3].icon} />
-              <span>{selectedDetailVendor?.youtube ?? "@pinehouse"}</span>
-            </div>
-            <div className="flex items-center gap-4 mb-4">
-              <FontAwesomeIcon icon={dataContact[4].icon} />
-              <span>{selectedDetailVendor?.email ?? "pine@gmail.com"} </span>
-            </div>
+            {selectedDetailVendor?.instagram !== "" && (
+              <div className="flex items-center gap-4 mb-4">
+                <FontAwesomeIcon icon={dataContact[0].icon} />
+                <span>{selectedDetailVendor?.instagram}</span>
+              </div>
+            )}
+            {selectedDetailVendor?.facebook !== "" && (
+              <div className="flex items-center gap-4 mb-4">
+                <FontAwesomeIcon icon={dataContact[1].icon} />
+                <span>{selectedDetailVendor?.facebook}</span>
+              </div>
+            )}
+            {selectedDetailVendor?.tiktok !== "" && (
+              <div className="flex items-center gap-4 mb-4">
+                <FontAwesomeIcon icon={dataContact[2].icon} />
+                <span>{selectedDetailVendor?.tiktok}</span>
+              </div>
+            )}
+            {selectedDetailVendor?.youtube !== "" && (
+              <div className="flex items-center gap-4 mb-4">
+                <FontAwesomeIcon icon={dataContact[3].icon} />
+                <span>{selectedDetailVendor?.youtube}</span>
+              </div>
+            )}
+            {selectedDetailVendor?.email !== "" && (
+              <div className="flex items-center gap-4 mb-4">
+                <FontAwesomeIcon icon={dataContact[4].icon} />
+                <span>{selectedDetailVendor?.email} </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

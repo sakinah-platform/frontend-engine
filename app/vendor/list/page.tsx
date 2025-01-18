@@ -17,10 +17,13 @@ import { AppDispatch, RootState } from "@/lib/store";
 import { fetchVendorCategory } from "@/lib/redux/slicer/CategorySlicer";
 import { fetchVendor } from "@/lib/redux/slicer/VendorSlicer";
 import { fetchCity } from "@/lib/redux/slicer/CitySlicer";
+import { useRouter } from "next/navigation";
 
 export default function ListVendor() {
   const [currentPage, setCurrentPage] = useState(1);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const { category, loadingCategory } = useSelector(
     (state: RootState) => state.categories
@@ -115,6 +118,8 @@ export default function ListVendor() {
       image: "photo-3.png",
     },
   ];
+
+  console.log("vendor>>>", vendor);
 
   return (
     <>
@@ -252,7 +257,7 @@ export default function ListVendor() {
                 )}
               </Formik>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:mx-16">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:mx-16 ">
               {loadingVendor
                 ? "Loading..."
                 : vendor.length > 0
@@ -260,7 +265,8 @@ export default function ListVendor() {
                     // const urutan = i + 13 * currentPage - 12;
                     return (
                       <div
-                        className="shadow-lg rounded-tl-3xl rounded-br-3xl p-4 bg-white"
+                        className="shadow-lg rounded-tl-3xl rounded-br-3xl p-4 bg-white cursor-pointer"
+                        onClick={() => router.push(`/vendor/detail/${item.id}`)}
                         key={i}
                       >
                         <div className="border-2 border-primary rounded-tl-3xl rounded-br-3xl rounded-lg">
