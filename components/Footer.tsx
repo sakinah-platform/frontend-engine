@@ -22,14 +22,14 @@ export const Footer = () => {
 						<ul className='flex flex-wrap items-center justify-center gap-5'>
 							<li>- Privacy</li>
 							<li>- Terms</li>
-							<li>- Sitemap</li>
+							{/* <li>- Sitemap</li> */}
 						</ul>
 					</div>
 					<div className='flex gap-2'>
-						<span>
+						{/* <span>
 							<FontAwesomeIcon icon={faGlobe} />
 							English (US)
-						</span>
+						</span> */}
 						<FontAwesomeIcon icon={faFacebook} />
 						<FontAwesomeIcon icon={faX} />
 						<FontAwesomeIcon icon={faInstagram} />
