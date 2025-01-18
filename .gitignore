@@ -42,3 +42,5 @@ next-env.d.ts
 /public/banner*
 /public/photos*
 node_modules
+.vscode/**
+.idea/**

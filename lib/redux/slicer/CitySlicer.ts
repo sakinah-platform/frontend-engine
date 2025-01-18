@@ -49,7 +49,7 @@ const citySlice = createSlice({
 			state.loadingCity = true;
 		});
 		builder.addCase(fetchCity.fulfilled, (state, action) => {
-			console.log(action.payload);
+			// console.log(action.payload);
 			state.city = action.payload;
 
 			state.loadingCity = false;
