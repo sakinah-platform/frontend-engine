@@ -287,8 +287,6 @@ export default function DetailVendor({
   //   dispatch(fetchDetailVendor());
   // }, []);
 
-  console.log("detailVendor", detailVendor);
-
   type DataContactItem = {
     icon: IconDefinition; // or the correct type for FontAwesomeIcon
     name: keyof DetailVendorType; // Ensure `name` matches keys of `detailVendor`

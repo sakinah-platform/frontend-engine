@@ -38,10 +38,7 @@ export default function ListVendor() {
     dispatch(fetchVendorCategory());
     dispatch(fetchVendor());
     dispatch(fetchCity());
-    // console.log(vendor);
   }, [dispatch]);
-
-  console.log("vendor", vendor);
 
   interface FilterValues {
     nama: string;
@@ -119,8 +116,6 @@ export default function ListVendor() {
     },
   ];
 
-  console.log("vendor>>>", vendor);
-
   return (
     <>
       <MainNavbar />
@@ -148,7 +143,6 @@ export default function ListVendor() {
                   // category: [],
                 }}
                 onSubmit={(values) => {
-                  console.log(values);
                   const params: Record<string, string | number | undefined> = {
                     ...(values.nama ? { search: values.nama } : {}),
                     ...(values.kota ? { city: values.kota } : {}),
