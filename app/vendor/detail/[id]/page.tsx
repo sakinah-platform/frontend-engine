@@ -29,6 +29,7 @@ import {
 } from "@fortawesome/react-fontawesome";
 import { select } from "framer-motion/client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -45,13 +46,6 @@ type PackageDesc = {
   crew: string[];
 };
 
-// type Contact = {
-//   email: string;
-//   instagram: string;
-//   url: string;
-//   fb: string;
-//   phone: string;
-// };
 export default function DetailVendor({
   params,
 }: {
@@ -190,14 +184,6 @@ export default function DetailVendor({
     },
   ];
 
-  // const dataContact: Contact = {
-  //   email: "pinehouse@gmail.com",
-  //   instagram: "082319781999",
-  //   url: "@pinehouse_organizer",
-  //   fb: "@pinehouse_organizer",
-  //   phone: "pinehouse.com",
-  // };
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
@@ -206,6 +192,8 @@ export default function DetailVendor({
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const router = useRouter();
 
   // const dispatch = useDispatch<AppDispatch>();
   const { detailVendor, loadingDetailVendor } = useSelector(
@@ -283,31 +271,48 @@ export default function DetailVendor({
     };
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(fetchDetailVendor());
-  // }, []);
-
-  type DataContactItem = {
-    icon: IconDefinition; // or the correct type for FontAwesomeIcon
-    name: keyof DetailVendorType; // Ensure `name` matches keys of `detailVendor`
-  };
-
-  const dataContact: DataContactItem[] = [
-    { name: "instagram", icon: faInstagram },
-    { name: "facebook", icon: faFacebook },
-    { name: "tiktok", icon: faTiktok },
-    { name: "youtube", icon: faYoutube },
-    { name: "email", icon: faEnvelope },
+  const socialMediaLinks = [
+    {
+      platform: "instagram",
+      icon: faInstagram,
+      value: selectedDetailVendor?.instagram,
+      url: (username: string) => `https://www.instagram.com/${username}`,
+    },
+    {
+      platform: "facebook",
+      icon: faFacebook,
+      value: selectedDetailVendor?.facebook,
+      url: (username: string) => `https://www.facebook.com/${username}`,
+    },
+    {
+      platform: "tiktok",
+      icon: faTiktok,
+      value: selectedDetailVendor?.tiktok,
+      url: (username: string) => `https://www.tiktok.com/@${username}`,
+    },
+    {
+      platform: "youtube",
+      icon: faYoutube,
+      value: selectedDetailVendor?.youtube,
+      url: (channel: string) => `https://www.youtube.com/@${channel}`,
+    },
+    {
+      platform: "email",
+      icon: faEnvelope,
+      value: selectedDetailVendor?.email,
+      url: (email: string) => `mailto:${email}`,
+    },
   ];
 
   return (
     <div className="bg-white">
       <MainNavbar />
-      <div className="h-[750px] flex justify-center items-center">
+
+      <div className="h-[750px] flex justify-center items-center ">
         <div className="relative w-full h-[700px] rounded-t-full mt-20 bg-secondary">
           <div className="absolute top-20 w-full h-[650px] rounded-t-full bg-white">
             <div className="flex flex-col justify-center items-center h-full">
-              <div className="rounded-full relative bg-secondary2 w-[310px] h-[310px] mt-24"></div>
+              <div className="rounded-full relative bg-secondary2 w-[310px] h-[310px] mt-32"></div>
               <div className="rounded-full overflow-hidden w-72 h-72 absolute">
                 <Image
                   src={selectedDetailVendor?.profile_image}
@@ -319,16 +324,18 @@ export default function DetailVendor({
               </div>
 
               <h1 className="text-3xl mt-6">{selectedDetailVendor?.name}</h1>
-              <h1 className="text-2xl">{selectedDetailVendor?.about}</h1>
+              <h1 className="text-2xl max-w-[1000px]">
+                {selectedDetailVendor?.about}
+              </h1>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col my-10 text-xl justify-center bg-white">
+      <div className="flex flex-col my-10 text-xl justify-center items-center bg-white">
         <div className="mx-auto max-w-[750px] mt-12 h-40 rounded-lg">
           <SliderPhotos photos={photos} qty={3} />
         </div>
-        <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20">
+        <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 ">
           <div className="max-w-[500px] text-gray-700">
             <span>{selectedDetailVendor?.about}</span>
             <p>{selectedDetailVendor?.description}</p>
@@ -343,36 +350,60 @@ export default function DetailVendor({
             ))}
           </div> */}
           <div>
-            {selectedDetailVendor?.instagram !== "" && (
-              <div className="flex items-center gap-4 mb-4">
+            {loadingDetailVendor
+              ? "Loading..."
+              : socialMediaLinks
+                  .filter((link) => link.value) // Only include links with non-empty values
+                  .map((link, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 mb-4 cursor-pointer"
+                      onClick={() =>
+                        window.open(link.url(link.value), "_blank")
+                      }
+                    >
+                      {link.icon && <FontAwesomeIcon icon={link.icon} />}
+                      <span>{link.value}</span>
+                    </div>
+                  ))}
+
+            {/* {selectedDetailVendor?.instagram && (
+              <div
+                className="flex items-center gap-4 mb-4"
+                onClick={() =>
+                  router.push(
+                    `https://www.instagram.com/${selectedDetailVendor?.instagram}`
+                  )
+                }
+              >
                 <FontAwesomeIcon icon={dataContact[0].icon} />
                 <span>{selectedDetailVendor?.instagram}</span>
               </div>
             )}
-            {selectedDetailVendor?.facebook !== "" && (
+            {selectedDetailVendor?.facebook && (
               <div className="flex items-center gap-4 mb-4">
                 <FontAwesomeIcon icon={dataContact[1].icon} />
                 <span>{selectedDetailVendor?.facebook}</span>
               </div>
             )}
-            {selectedDetailVendor?.tiktok !== "" && (
+            {selectedDetailVendor?.tiktok && (
               <div className="flex items-center gap-4 mb-4">
                 <FontAwesomeIcon icon={dataContact[2].icon} />
                 <span>{selectedDetailVendor?.tiktok}</span>
               </div>
             )}
-            {selectedDetailVendor?.youtube !== "" && (
+            {selectedDetailVendor?.youtube && (
               <div className="flex items-center gap-4 mb-4">
                 <FontAwesomeIcon icon={dataContact[3].icon} />
                 <span>{selectedDetailVendor?.youtube}</span>
               </div>
             )}
-            {selectedDetailVendor?.email !== "" && (
+            {selectedDetailVendor?.email && (
               <div className="flex items-center gap-4 mb-4">
                 <FontAwesomeIcon icon={dataContact[4].icon} />
                 <span>{selectedDetailVendor?.email} </span>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
