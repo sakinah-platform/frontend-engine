@@ -3,10 +3,7 @@
 import { Button1 } from "@/components/Button1";
 import { MainNavbar } from "@/components/MainNavbar";
 import { SliderPhotos } from "@/components/SliderCard";
-import {
-  DetailVendorType,
-  fetchDetailVendor,
-} from "@/lib/redux/slicer/VendorDetailSlicer";
+import { fetchDetailVendor } from "@/lib/redux/slicer/VendorDetailSlicer";
 import { AppDispatch, RootState } from "@/lib/store";
 import {
   faFacebook,
@@ -18,20 +15,14 @@ import {
   faCopyright,
   faEnvelope,
   faGlobe,
-  faMessage,
-  faVoicemail,
   faX,
-  IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
-import { select } from "framer-motion/client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 type Package = {
   img: string;
@@ -308,40 +299,71 @@ export default function DetailVendor({
     <div className="bg-white">
       <MainNavbar />
 
-      <div className="h-[750px] flex justify-center items-center ">
-        <div className="relative w-full h-[700px] rounded-t-full mt-20 bg-secondary">
-          <div className="absolute top-20 w-full h-[650px] rounded-t-full bg-white">
-            <div className="flex flex-col justify-center items-center h-full">
-              <div className="rounded-full relative bg-secondary2 w-[310px] h-[310px] mt-32"></div>
-              <div className="rounded-full overflow-hidden w-72 h-72 absolute">
-                <Image
-                  src={selectedDetailVendor?.profile_image}
-                  alt="Picture of the author"
-                  width={500}
-                  height={500}
-                  className="object-cover w-full h-full"
-                />
-              </div>
+      {loadingDetailVendor ? (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white z-50">
+          <div className="text-center text-primary">
+            Sebentar ya...
+            <motion.div
+              className="m-auto"
+              animate={{
+                rotate: [0, 180],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <Image
+                src="/logo/png/tertiary_1.png"
+                alt="loader"
+                width={150}
+                height={150}
+              />
+            </motion.div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="h-[750px] flex justify-center items-center ">
+            <div className="relative w-full h-[700px] rounded-t-full mt-20 bg-secondary">
+              <div className="absolute top-20 w-full h-[650px] rounded-t-full bg-white">
+                <div className="flex flex-col justify-center items-center h-full">
+                  <div className="rounded-full relative bg-secondary2 w-[310px] h-[310px] mt-32"></div>
+                  <div className="rounded-full overflow-hidden w-72 h-72 absolute">
+                    <Image
+                      src={
+                        selectedDetailVendor?.profile_image ??
+                        "/logo/png/tertiary_1.png"
+                      }
+                      alt="Picture of the author"
+                      width={500}
+                      height={500}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
 
-              <h1 className="text-3xl mt-6">{selectedDetailVendor?.name}</h1>
-              <h1 className="text-2xl max-w-[1000px]">
-                {selectedDetailVendor?.about}
-              </h1>
+                  <h1 className="text-3xl mt-6">
+                    {selectedDetailVendor?.name}
+                  </h1>
+                  <h1 className="text-2xl max-w-[1000px]">
+                    {selectedDetailVendor?.about}
+                  </h1>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="flex flex-col my-10 text-xl justify-center items-center bg-white">
-        <div className="mx-auto max-w-[750px] mt-12 h-40 rounded-lg">
-          <SliderPhotos photos={photos} qty={3} />
-        </div>
-        <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 ">
-          <div className="max-w-[500px] text-gray-700">
-            <span>{selectedDetailVendor?.about}</span>
-            <p>{selectedDetailVendor?.description}</p>
-          </div>
+          <div className="flex flex-col my-10 text-xl justify-center items-center bg-white">
+            <div className="mx-auto max-w-[750px] mt-12 h-40 rounded-lg">
+              <SliderPhotos photos={photos} qty={3} />
+            </div>
+            <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 ">
+              <div className="max-w-[500px] text-gray-700">
+                <span>{selectedDetailVendor?.about}</span>
+                <p>{selectedDetailVendor?.description}</p>
+              </div>
 
-          {/* <div>
+              {/* <div>
             {dataContact.map((items, i) => (
               <div className="flex items-center gap-4 mb-4" key={i}>
                 <FontAwesomeIcon icon={items.icon} />
@@ -349,25 +371,25 @@ export default function DetailVendor({
               </div>
             ))}
           </div> */}
-          <div>
-            {loadingDetailVendor
-              ? "Loading..."
-              : socialMediaLinks
-                  .filter((link) => link.value) // Only include links with non-empty values
-                  .map((link, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-4 mb-4 cursor-pointer"
-                      onClick={() =>
-                        window.open(link.url(link.value), "_blank")
-                      }
-                    >
-                      {link.icon && <FontAwesomeIcon icon={link.icon} />}
-                      <span>{link.value}</span>
-                    </div>
-                  ))}
+              <div>
+                {loadingDetailVendor
+                  ? "Loading..."
+                  : socialMediaLinks
+                      .filter((link) => link.value)
+                      .map((link, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-4 mb-4 cursor-pointer"
+                          onClick={() =>
+                            window.open(link?.url(link?.value), "_blank")
+                          }
+                        >
+                          {link?.icon && <FontAwesomeIcon icon={link?.icon} />}
+                          <span>{link?.value}</span>
+                        </div>
+                      ))}
 
-            {/* {selectedDetailVendor?.instagram && (
+                {/* {selectedDetailVendor?.instagram && (
               <div
                 className="flex items-center gap-4 mb-4"
                 onClick={() =>
@@ -404,68 +426,68 @@ export default function DetailVendor({
                 <span>{selectedDetailVendor?.email} </span>
               </div>
             )} */}
-          </div>
-        </div>
-      </div>
-
-      {/* first div */}
-      <div className="flex flex-col my-10 text-xl justify-center items-center bg-white">
-        <div className="flex justify-center">
-          <Button1
-            text="Package"
-            className="w-[300px] md:w-[500px] lg:w-[700px] text-sm md:text-lg"
-          />
-        </div>
-        <div className="relative mt-16 w-full max-w-[270px] md:max-w-[750px] lg:max-w-[1020px] flex items-center">
-          <button
-            onClick={handlePrev}
-            className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
-          >
-            &lt;
-          </button>
-
-          <div className="overflow-hidden w-full">
-            <div
-              className="flex transition-transform duration-300"
-              style={{
-                transform: `translateX(-${
-                  currentIndex * (100 / visibleItems)
-                }%)`,
-              }}
-            >
-              {dataPackage.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 rounded-lg flex-col mb-4 border shadow-lg mx-5 cursor-pointer w-[250px] lg:w-[300px] hover:bg-secondary2"
-                  onClick={() => handleProductClick(index)}
-                >
-                  <div className="rounded-t-lg overflow-hidden w-[250px] lg:w-[300px] h-72">
-                    <Image
-                      src={item.img}
-                      alt={item.name}
-                      width={200}
-                      height={100}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-lg">{item.name}</p>
-                    <p className="pt-1">{item.price}</p>
-                  </div>
-                </div>
-              ))}
+              </div>
             </div>
           </div>
 
-          <button
-            onClick={handleNext}
-            className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
-          >
-            &gt;
-          </button>
-        </div>
+          {/* first div */}
+          <div className="flex flex-col my-10 text-xl justify-center items-center bg-white">
+            <div className="flex justify-center">
+              <Button1
+                text="Package"
+                className="w-[300px] md:w-[500px] lg:w-[700px] text-sm md:text-lg"
+              />
+            </div>
+            <div className="relative mt-16 w-full max-w-[270px] md:max-w-[750px] lg:max-w-[1020px] flex items-center">
+              <button
+                onClick={handlePrev}
+                className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
+              >
+                &lt;
+              </button>
 
-        {/* <div className="relative mt-20 max-w-[500px] md:max-w-[750px] lg:max-w-[1000px] flex items-center">
+              <div className="overflow-hidden w-full">
+                <div
+                  className="flex transition-transform duration-300"
+                  style={{
+                    transform: `translateX(-${
+                      currentIndex * (100 / visibleItems)
+                    }%)`,
+                  }}
+                >
+                  {dataPackage.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex-shrink-0 rounded-lg flex-col mb-4 border shadow-lg mx-5 cursor-pointer w-[250px] lg:w-[300px] hover:bg-secondary2"
+                      onClick={() => handleProductClick(index)}
+                    >
+                      <div className="rounded-t-lg overflow-hidden w-[250px] lg:w-[300px] h-72">
+                        <Image
+                          src={item.img}
+                          alt={item.name}
+                          width={200}
+                          height={100}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <p className="text-lg">{item.name}</p>
+                        <p className="pt-1">{item.price}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                onClick={handleNext}
+                className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
+              >
+                &gt;
+              </button>
+            </div>
+
+            {/* <div className="relative mt-20 max-w-[500px] md:max-w-[750px] lg:max-w-[1000px] flex items-center">
           <button
             onClick={handlePrev}
             className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
@@ -513,88 +535,88 @@ export default function DetailVendor({
             &gt;
           </button>
         </div> */}
-      </div>
+          </div>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
-          <div className="relative bg-white rounded-lg px-20 py-20">
-            {/* Second div content */}
-            <div className="flex flex-col text-2xl justify-center items-center">
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              >
-                ✖
-              </button>
-              {/* <Button1
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
+              <div className="relative bg-white rounded-lg px-20 py-20">
+                {/* Second div content */}
+                <div className="flex flex-col text-2xl justify-center items-center">
+                  <button
+                    onClick={closeModal}
+                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                  >
+                    ✖
+                  </button>
+                  {/* <Button1
                 text="Package Description"
                 className="w-[300px] md:w-[500px] lg:w-[700px] text-sm md:text-lg"
               /> */}
-              <div className="flex flex-col justify-center gap-10 w-full lg:max-w-[1000px]">
-                <h1 className="text-2xl font-bold mb-4 text-center">
-                  {dataPackageDesc[currentPackageIndex].title}
-                </h1>
-                <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-10">
-                  <div className="grid grid-cols-2 gap-2 lg:gap-4">
-                    {dataPackageDesc[currentPackageIndex].img.map(
-                      (image, imgIndex) => (
-                        <div
-                          key={imgIndex}
-                          className="w-28 h-28  lg:w-40 lg:h-40 relative"
-                        >
-                          <Image
-                            src={image}
-                            alt={`Package image ${imgIndex + 1}`}
-                            fill
-                            className="object-cover rounded-md"
-                          />
-                        </div>
-                      )
-                    )}
-                  </div>
+                  <div className="flex flex-col justify-center gap-10 w-full lg:max-w-[1000px]">
+                    <h1 className="text-2xl font-bold mb-4 text-center">
+                      {dataPackageDesc[currentPackageIndex].title}
+                    </h1>
+                    <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-10">
+                      <div className="grid grid-cols-2 gap-2 lg:gap-4">
+                        {dataPackageDesc[currentPackageIndex].img.map(
+                          (image, imgIndex) => (
+                            <div
+                              key={imgIndex}
+                              className="w-28 h-28  lg:w-40 lg:h-40 relative"
+                            >
+                              <Image
+                                src={image}
+                                alt={`Package image ${imgIndex + 1}`}
+                                fill
+                                className="object-cover rounded-md"
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
 
-                  <div className="mt-4">
-                    <h3 className="text-lg font-semibold">Decoration</h3>
-                    <ul className="text-base list-disc list-inside">
-                      {dataPackageDesc[currentPackageIndex].decoration.map(
-                        (decor, decorIndex) => (
-                          <li key={decorIndex}>{decor}</li>
-                        )
-                      )}
-                    </ul>
+                      <div className="mt-4">
+                        <h3 className="text-lg font-semibold">Decoration</h3>
+                        <ul className="text-base list-disc list-inside">
+                          {dataPackageDesc[currentPackageIndex].decoration.map(
+                            (decor, decorIndex) => (
+                              <li key={decorIndex}>{decor}</li>
+                            )
+                          )}
+                        </ul>
 
-                    <h3 className="text-lg font-semibold mt-4">Crew</h3>
-                    <ul className="text-base list-disc list-inside">
-                      {dataPackageDesc[currentPackageIndex].crew.map(
-                        (crewMember, crewIndex) => (
-                          <li key={crewIndex}>{crewMember}</li>
-                        )
-                      )}
-                    </ul>
+                        <h3 className="text-lg font-semibold mt-4">Crew</h3>
+                        <ul className="text-base list-disc list-inside">
+                          {dataPackageDesc[currentPackageIndex].crew.map(
+                            (crewMember, crewIndex) => (
+                              <li key={crewIndex}>{crewMember}</li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
+                </div>
+                <div className="flex justify-between mt-6">
+                  <button
+                    onClick={handleModalPrev}
+                    className="text-3xl text-gray-500 hover:text-black"
+                  >
+                    &lt;
+                  </button>
+                  <button
+                    onClick={handleModalNext}
+                    className="text-3xl text-gray-500 hover:text-black"
+                  >
+                    &gt;
+                  </button>
                 </div>
               </div>
             </div>
-            <div className="flex justify-between mt-6">
-              <button
-                onClick={handleModalPrev}
-                className="text-3xl text-gray-500 hover:text-black"
-              >
-                &lt;
-              </button>
-              <button
-                onClick={handleModalNext}
-                className="text-3xl text-gray-500 hover:text-black"
-              >
-                &gt;
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* second div */}
-      {/* <div className="flex flex-col my-12 text-2xl justify-center items-center">
+          {/* second div */}
+          {/* <div className="flex flex-col my-12 text-2xl justify-center items-center">
         <div className="flex justify-center ">
           <Button1
             text="Package Description"
@@ -651,36 +673,38 @@ export default function DetailVendor({
         </div>
       </div> */}
 
-      <div className="bg-primary text-white md:px-32 px-16 pt-3 pb-2 shadow-lg rounded-t-2xl shadow-lg">
-        <div className="text-center pb-1 bg-white rounded-full w-24 mx-auto"></div>
-        <div className="shadow-lg text-white rounded-lg mt-10">
-          <div className="text-3xl font-bold mt-3">Wedding Platform</div>
-          <span className="text-md">Tagline Here</span>
-          <hr />
-          <div className="flex text-xs py-3 justify-between">
-            <div className="flex gap-8">
-              <span>
-                <FontAwesomeIcon icon={faCopyright} /> 2024 Wedding Platform,
-                Inc.
-              </span>
-              <ul className="flex flex-wrap items-center justify-center gap-5">
-                <li>- Privacy</li>
-                <li>- Terms</li>
-                <li>- Sitemap</li>
-              </ul>
-            </div>
-            <div className="flex gap-2">
-              <span>
-                <FontAwesomeIcon icon={faGlobe} />
-                English (US)
-              </span>
-              <FontAwesomeIcon icon={faFacebook} />
-              <FontAwesomeIcon icon={faX} />
-              <FontAwesomeIcon icon={faInstagram} />
+          <div className="bg-primary text-white md:px-32 px-16 pt-3 pb-2 shadow-lg rounded-t-2xl shadow-lg">
+            <div className="text-center pb-1 bg-white rounded-full w-24 mx-auto"></div>
+            <div className="shadow-lg text-white rounded-lg mt-10">
+              <div className="text-3xl font-bold mt-3">Wedding Platform</div>
+              <span className="text-md">Tagline Here</span>
+              <hr />
+              <div className="flex text-xs py-3 justify-between">
+                <div className="flex gap-8">
+                  <span>
+                    <FontAwesomeIcon icon={faCopyright} /> 2024 Wedding
+                    Platform, Inc.
+                  </span>
+                  <ul className="flex flex-wrap items-center justify-center gap-5">
+                    <li>- Privacy</li>
+                    <li>- Terms</li>
+                    <li>- Sitemap</li>
+                  </ul>
+                </div>
+                <div className="flex gap-2">
+                  <span>
+                    <FontAwesomeIcon icon={faGlobe} />
+                    English (US)
+                  </span>
+                  <FontAwesomeIcon icon={faFacebook} />
+                  <FontAwesomeIcon icon={faX} />
+                  <FontAwesomeIcon icon={faInstagram} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
