@@ -75,7 +75,7 @@ export const MainNavbar = () => {
 				</Dropdown> */}
 				<Navbar.Toggle />
 			</div>
-			<Navbar.Collapse>
+			{/* <Navbar.Collapse>
 				{linkNavbar.map((item, i) => (
 					<Navbar.Link href={item.link} key={i}>
 						{item.active ? (
@@ -88,12 +88,12 @@ export const MainNavbar = () => {
 						) : (
 							<button className='hover:border-b-4 hover:border-primary hover:text-primary pb-4 rounded-lg'>
 								{item.title}
-								{/* <div className=' text-center pb-2 bg-primary2 mt-1 rounded-full w-12 mx-auto'></div> */}
+								<div className=' text-center pb-2 bg-primary2 mt-1 rounded-full w-12 mx-auto'></div>
 							</button>
 						)}
 					</Navbar.Link>
 				))}
-			</Navbar.Collapse>
+			</Navbar.Collapse> */}
 		</Navbar>
 	);
 };

@@ -52,7 +52,7 @@ const categorySlice = createSlice({
 			state.loadingCategory = true;
 		});
 		builder.addCase(fetchVendorCategory.fulfilled, (state, action) => {
-			console.log(action.payload);
+			// console.log(action.payload);
 			state.category = action.payload;
 
 			state.loadingCategory = false;
