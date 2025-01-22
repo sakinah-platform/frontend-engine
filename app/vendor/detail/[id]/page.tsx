@@ -320,12 +320,12 @@ export default function DetailVendor({
         </div>
       ) : (
         <div>
-          <div className="h-[750px] flex justify-center items-center ">
-            <div className="relative w-full h-[700px] rounded-t-full mt-20 bg-secondary">
-              <div className="absolute top-20 w-full h-[650px] rounded-t-full bg-white">
-                <div className="flex flex-col justify-center items-center h-full">
-                  <div className="rounded-full relative bg-secondary2 w-[310px] h-[310px] mt-32"></div>
-                  <div className="rounded-full overflow-hidden w-72 h-72 absolute">
+          <div className="h-[600px] md:h-[750px] flex justify-center items-center ">
+            <div className="relative w-full h-[450px] md:h-[700px] rounded-t-full mt-20 md:mt-32 bg-secondary">
+              <div className="absolute top-20 w-full h-[450px] md:h-[650px] rounded-t-full bg-white">
+                <div className="flex flex-col relative text-center justify-center items-center h-full mt-20">
+                  <div className="rounded-full absolute bg-secondary2 w-[210px] h-[210px] md:w-[310px] md:h-[310px] top-12"></div>
+                  <div className=" rounded-full overflow-hidden w-48 h-48 md:w-72 md:h-72 absolute top-14">
                     <Image
                       src={
                         selectedDetailVendor?.profile_image ??
@@ -334,25 +334,24 @@ export default function DetailVendor({
                       alt="Picture of the author"
                       width={500}
                       height={500}
-                      className="object-cover w-full h-full"
+                      className="object-cover w-[250px] h-[250px] md:w-full md:h-full"
                     />
                   </div>
-
-                  <h1 className="text-3xl mt-6">
+                  <h1 className="text-xl md:text-3xl mt-44">
                     {selectedDetailVendor?.name}
                   </h1>
-                  <h1 className="text-2xl max-w-[1000px]">
+                  <h1 className="text-lg md:text-2xl max-w-[1000px] px-4">
                     {selectedDetailVendor?.about}
                   </h1>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex flex-col my-10 text-xl justify-center items-center bg-white">
-            <div className="mx-auto max-w-[750px] mt-12 h-40 rounded-lg">
+          <div className="flex flex-col my-10 text-base md:text-xl justify-center items-center bg-white">
+            <div className="mx-auto max-w-[320px] md:max-w-[650px] lg:max-w-[750px] mt-12 h-40 rounded-lg">
               <SliderPhotos photos={photos} qty={3} />
             </div>
-            <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 ">
+            <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 px-10">
               <div className="max-w-[500px] text-gray-700">
                 <span>{selectedDetailVendor?.about}</span>
                 <p>{selectedDetailVendor?.description}</p>
