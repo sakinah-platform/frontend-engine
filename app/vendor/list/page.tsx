@@ -19,6 +19,8 @@ import { fetchVendor } from "@/lib/redux/slicer/VendorSlicer";
 import { fetchCity } from "@/lib/redux/slicer/CitySlicer";
 
 export default function ListVendor() {
+	const searchParams = new URLSearchParams(window.location.search);
+	const paramCategory = searchParams.get("category");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -33,10 +35,14 @@ export default function ListVendor() {
 
 	useEffect(() => {
 		dispatch(fetchVendorCategory());
-		dispatch(fetchVendor());
+		if (paramCategory) {
+			dispatch(fetchVendor({ queryParams: { category: paramCategory } }));
+		} else {
+			dispatch(fetchVendor());
+		}
 		dispatch(fetchCity());
-		// console.log(vendor);
-	}, [dispatch]);
+		// console.log(paramCategory);
+	}, [dispatch, paramCategory]);
 
 	interface FilterValues {
 		nama: string;
@@ -136,7 +142,7 @@ export default function ListVendor() {
 									nama: "",
 									// harga: [],
 									kota: 0,
-									category: 0,
+									category: Number(paramCategory) ?? 0,
 									// kota: [],
 									// category: [],
 								}}

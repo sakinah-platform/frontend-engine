@@ -10,7 +10,7 @@ import { MainNavbar } from "@/components/Navbar/Main";
 import { useDispatch, useSelector } from "react-redux";
 // import { categoryReducer } from "../lib/redux/slicer/CategorySlicer";
 import { AppDispatch, RootState } from "../lib/store";
-import { Form, Formik } from "formik";
+// import { Form, Formik } from "formik";
 import Image from "next/image";
 import { BannerWithText } from "@/components/BannerWithText";
 import { Footer } from "@/components/Footer";
@@ -151,14 +151,37 @@ export default function Home() {
 										className={`font-alice font-bold underline underline-offset-4 md:text-lg lg:text-2xl`}>
 										Kategori apa saja yang mau Anda cari?
 									</div>
-									<Formik
+									<div className='grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-4 justify-items-center mt-3 mb-2'>
+										{category
+											?.slice()
+											?.sort((a, b) => a.name[0].localeCompare(b.name[0]))
+											?.map((item, i) => (
+												<a
+													href={`/vendor/list?category=${item.id}`}
+													className='flex shadow rounded-lg p-3 w-48 text-start items-center transition hover:bg-secondary2 hover:shadow-lg'
+													key={i}>
+													<div className='relative w-10 h-10'>
+														<Image
+															src={item.icon}
+															alt={item.name}
+															fill
+															className='object-cover'
+														/>
+													</div>
+													<span className='ms-2 text-md text-primary font-bold'>
+														{item.name}
+													</span>
+												</a>
+											))}
+									</div>
+									{/* <Formik
 										initialValues={{
 											categories: [] as number[],
 										}}
 										// validationSchema={{}}
 										onSubmit={(values) => {
 											// same shape as initial values
-											console.log(values);
+											// console.log(values);
 											location.replace("/vendor/list");
 										}}>
 										{({ values, setFieldValue }) => (
@@ -169,7 +192,6 @@ export default function Home() {
 															? "lg:grid-rows-6 sm:grid-rows-12 sm:grid-flow-col"
 															: ""
 													}  gap-1 ms-10 mt-3`}>
-													{/* {categories */}
 													{category
 														?.slice()
 														?.sort((a, b) => a.name[0].localeCompare(b.name[0]))
@@ -217,7 +239,7 @@ export default function Home() {
 												</button>
 											</Form>
 										)}
-									</Formik>
+									</Formik> */}
 								</>
 							)}
 						</div>
