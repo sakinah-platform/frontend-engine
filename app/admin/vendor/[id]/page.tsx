@@ -1,17 +1,6 @@
 "use client";
 
-import { Footer } from "@/components/Footer";
-import { MainNavbar } from "@/components/Navbar/Main";
-import { UpReveal } from "@/components/MotionTemplate";
-import { faSearch, faTag } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Formik } from "formik";
-import Image from "next/image";
-import { SliderPhotos } from "@/components/SliderCard";
-import React, { useCallback, useEffect, useState } from "react";
-import { DropdownWithSearch } from "@/components/MainDropdown";
-import { dataDropdown } from "@/lib/dataSelect";
-import { MainNavPagination } from "@/components/MainNavPagination";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 import { fetchVendorCategory } from "@/lib/redux/slicer/CategorySlicer";
@@ -19,9 +8,10 @@ import { fetchVendor } from "@/lib/redux/slicer/VendorSlicer";
 import { fetchCity } from "@/lib/redux/slicer/CitySlicer";
 import ApplicationLogo from "@/components/ApplicationLogo";
 import ListSideNav from "@/components/Navbar/ListSideNav";
-import { initializeButtonNavActive } from "@/lib/handleArray";
+import { initializeButtonNavActive, useShowNav } from "@/lib/handleArray";
 import { Avatar, Dropdown } from "flowbite-react";
 import Biodata from "./Layer/Biodata";
+import { Paket } from "./Layer/Paket";
 
 export default function AdminVendor({
 	params,
@@ -29,6 +19,7 @@ export default function AdminVendor({
 	params: Promise<{ id: number | string }>;
 }) {
 	const dispatch = useDispatch<AppDispatch>();
+	const showNav = useShowNav();
 
 	useEffect(() => {
 		(async () => {
@@ -70,8 +61,8 @@ export default function AdminVendor({
 				{
 					id: 3,
 					text: "Paket",
-					component: "null",
-					// component: <Dokumen org={biodata ?? org} />,
+					// component: "null",
+					component: <Paket vendorPackages={selectedVendor?.packages} />,
 				},
 			],
 		},
@@ -82,13 +73,13 @@ export default function AdminVendor({
 		initializeButtonNavActive(listNav[0].subNav)
 	);
 
-	const { category, loadingCategory } = useSelector(
-		(state: RootState) => state.categories
-	);
+	// const { category, loadingCategory } = useSelector(
+	// 	(state: RootState) => state.categories
+	// );
 	// const { vendor, loadingVendor } = useSelector(
 	// 	(state: RootState) => state.vendors
 	// );
-	const { city, loadingCity } = useSelector((state: RootState) => state.cities);
+	// const { city, loadingCity } = useSelector((state: RootState) => state.cities);
 
 	useEffect(() => {
 		dispatch(fetchVendorCategory());
@@ -99,41 +90,6 @@ export default function AdminVendor({
 
 	// const [showNav, setShowNav] = useState(screen > 450 ? true : false);
 	// const [showNavDropdown, setShowNavDropdown] = useState(false);
-
-	const navigateToTab = (index: number) => {
-		nonActiveButtonNav(setButtonNavActive, index);
-		activeButtonNav(setButtonNavActive, index);
-		// setShowNav(false);
-	};
-	const activeButtonNav = useCallback(
-		(
-			setButton: React.Dispatch<React.SetStateAction<Record<number, boolean>>>,
-			navIndex: number
-		) => {
-			setButton((prevVisibility) => ({
-				...prevVisibility,
-				[navIndex]: true,
-			}));
-		},
-		[]
-	);
-
-	const nonActiveButtonNav = useCallback(
-		(
-			setButton: React.Dispatch<React.SetStateAction<Record<number, boolean>>>,
-			navIndex: number
-		) => {
-			setButton((prevVisibility) =>
-				Object.fromEntries(
-					Object.keys(prevVisibility).map((key) => [
-						Number(key),
-						Number(key) === navIndex ? true : false,
-					])
-				)
-			);
-		},
-		[]
-	);
 
 	return (
 		<>
@@ -187,7 +143,7 @@ export default function AdminVendor({
 									{item.subNav.map((items, j) => (
 										<ListSideNav
 											route={() => {
-												navigateToTab(j);
+												showNav.navigateToTab(setButtonNavActive, j);
 											}}
 											text={items.text}
 											// icon={item.icon}

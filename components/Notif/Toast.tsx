@@ -3,10 +3,7 @@ import {
 	faCheckCircle,
 	faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-	FontAwesomeIcon,
-	FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spinner, Toast } from "flowbite-react";
 import React, { MouseEventHandler } from "react";
 

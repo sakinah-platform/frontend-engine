@@ -33,7 +33,7 @@ const processStateSlice = createSlice({
 		toastStateReducer: (state, action) => {
 			state.toastState = action.payload;
 		},
-		toastCloseReducer: (state, action) => {
+		toastCloseReducer: (state) => {
 			state.toastState = false;
 		},
 	},

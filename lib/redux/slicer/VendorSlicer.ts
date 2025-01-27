@@ -23,14 +23,14 @@ export interface TypeVendor {
 	packages: TypeVendorPackages[];
 	schedules: TypeVendorSchedules[];
 	// starting_price: number;
-	[key: string]: any;
+	[key: string]: number | string | unknown;
 }
 
 type TypeVendorGalleries = {
 	id: number;
 	image: string;
 };
-type TypeVendorPackages = {
+export type TypeVendorPackages = {
 	id: number;
 	name: string;
 	price: number;

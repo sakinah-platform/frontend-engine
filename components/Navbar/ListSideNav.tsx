@@ -10,7 +10,6 @@ interface SubMenuItem {
 }
 
 interface ListSideNavProps {
-	title?: string;
 	subtitle?: string;
 	text: string;
 	route: MouseEventHandler<HTMLButtonElement> | string;
@@ -18,10 +17,10 @@ interface ListSideNavProps {
 	subMenu?: SubMenuItem[];
 	move?: boolean;
 	active?: boolean;
+	addClass?: string;
 }
 
 const ListSideNav = ({
-	title = "",
 	subtitle = "",
 	text,
 	route,
@@ -29,6 +28,7 @@ const ListSideNav = ({
 	subMenu = [],
 	move = false,
 	active = false,
+	addClass = "",
 }: ListSideNavProps) => {
 	// console.log(text, active);
 	return (
@@ -42,7 +42,7 @@ const ListSideNav = ({
 							active
 								? "border-e-4 border-e-sky-700 fw-bold text-gray-900 bg-gradient-to-r from-neutral-50 to-cyan-50"
 								: "border-0 border-e-sky-0 text-gray-500 bg-gradient-to-r from-sky-0 to-neutral-0"
-						} flex w-100 transition-all duration-700 items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}>
+						} flex w-100 transition-all duration-700 items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${addClass}`}>
 						{icon && (
 							<span
 								className={`w-5 h-5 ${
@@ -60,7 +60,7 @@ const ListSideNav = ({
 							active
 								? "text-white bg-primary2 shadow-lg"
 								: "text-gray-500 bg-white"
-						} font-bold flex transition-all duration-200 items-center p-2 hover:bg-primary3 rounded-e-lg w-full`}>
+						} font-bold flex transition-all duration-200 items-center p-2 hover:bg-primary hover:text-white rounded-e-lg w-full ${addClass}`}>
 						{icon && (
 							<span
 								className={`w-5 h-5 ${

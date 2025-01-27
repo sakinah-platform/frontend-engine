@@ -1,6 +1,7 @@
 "use client";
 
-import ApplicationLogo from "../ApplicationLogo";
+import React from "react";
+import ApplicationLogo from "./ApplicationLogo";
 
 import { Navbar } from "flowbite-react";
 
@@ -28,11 +29,11 @@ export const MainNavbar = () => {
 	// 	// }
 	// };
 
-	const linkNavbar = [
-		{ title: "Wedding Vendor", link: "/", active: true },
-		{ title: "Wedding Checklist", link: "#", active: false },
-		{ title: "Wedding Calculator", link: "#", active: false },
-	];
+	// const linkNavbar = [
+	// 	{ title: "Wedding Vendor", link: "/", active: true },
+	// 	{ title: "Wedding Checklist", link: "#", active: false },
+	// 	{ title: "Wedding Calculator", link: "#", active: false },
+	// ];
 
 	return (
 		<Navbar
@@ -75,7 +76,7 @@ export const MainNavbar = () => {
 				</Dropdown> */}
 				<Navbar.Toggle />
 			</div>
-			<Navbar.Collapse>
+			{/* <Navbar.Collapse>
 				{linkNavbar.map((item, i) => (
 					<Navbar.Link href={item.link} key={i}>
 						{item.active ? (
@@ -88,11 +89,12 @@ export const MainNavbar = () => {
 						) : (
 							<button className='hover:border-b-4 hover:border-primary hover:text-primary pb-4 rounded-lg'>
 								{item.title}
+								<div className=' text-center pb-2 bg-primary2 mt-1 rounded-full w-12 mx-auto'></div>
 							</button>
 						)}
 					</Navbar.Link>
 				))}
-			</Navbar.Collapse>
+			</Navbar.Collapse> */}
 		</Navbar>
 	);
 };

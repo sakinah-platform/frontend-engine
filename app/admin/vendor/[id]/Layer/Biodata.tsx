@@ -18,24 +18,21 @@ import { toastStateReducer } from "@/lib/redux/slicer/ProcessSlicer";
 import { biodataOneChange } from "@/lib/redux/slicer/Profile/biodataSlice";
 import { TypeVendor } from "@/lib/redux/slicer/VendorSlicer";
 import { RootState } from "@/lib/store";
-import { Formik } from "formik";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import { ToggleSwitch } from "flowbite-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Biodata = ({ vendor }: { vendor: TypeVendor }) => {
-	const [loading, setLoading] = useState(false);
+	const [loading] = useState(false);
 	// const props = usePage().props;
 	// const dispatch = useDispatch();
-	const { city, loadingCity } = useSelector((state: RootState) => state.cities);
-	const { category, loadingCategory } = useSelector(
-		(state: RootState) => state.categories
-	);
+	const { city } = useSelector((state: RootState) => state.cities);
+	const { category } = useSelector((state: RootState) => state.categories);
 	// console.log("====================================");
 	// console.log(vendor?.visibility);
 	// console.log("====================================");
@@ -135,9 +132,9 @@ const Biodata = ({ vendor }: { vendor: TypeVendor }) => {
 		// biodataOneChange: any
 	) => {
 		let validate: Yup.AnySchema | null = null;
-		let routePost = "link post";
-		let idPost = vendor?.id;
-		let slicer = biodataOneChange;
+		const routePost = "link post";
+		const idPost = vendor?.id;
+		const slicer = biodataOneChange;
 
 		// Determine slicer and routePost based on target
 		// switch (target) {

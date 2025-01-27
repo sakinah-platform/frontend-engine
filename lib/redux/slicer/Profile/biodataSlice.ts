@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the structure of an individual biodata item (customize as needed)
 interface BiodataItem {
-	[key: string]: any; // Replace `any` with specific field types if known
+	[key: string]: string | number; // Replace `any` with specific field types if known
 }
 
 // Define the state type
@@ -24,16 +24,19 @@ const biodataSlice = createSlice({
 		},
 		biodataOneChange: (
 			state,
-			action: PayloadAction<{ key: number; data: BiodataItem }>
+			action: PayloadAction<
+				{ key: number; data: Record<string, unknown> },
+				string
+			>
 		) => {
 			const { key, data } = action.payload;
 			if (state.biodata[key]) {
-				state.biodata[key] = data;
+				state.biodata[key] = data as BiodataItem;
 			}
 		},
 		biodataOneChildAdd: (
 			state,
-			action: PayloadAction<{ parent: number; data: any }>
+			action: PayloadAction<{ parent: number; data: Record<string, unknown> }>
 		) => {
 			const { parent, data } = action.payload;
 			if (Array.isArray(state.biodata[parent])) {
@@ -42,7 +45,11 @@ const biodataSlice = createSlice({
 		},
 		biodataOneChildChange: (
 			state,
-			action: PayloadAction<{ parent: number; key: number; data: any }>
+			action: PayloadAction<{
+				parent: number;
+				key: number;
+				data: Record<string, unknown>;
+			}>
 		) => {
 			const { parent, key, data } = action.payload;
 			if (Array.isArray(state.biodata[parent]) && state.biodata[parent][key]) {

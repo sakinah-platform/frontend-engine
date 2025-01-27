@@ -1,26 +1,23 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import { fetchCity } from "@/lib/redux/slicer/CitySlicer";
-import dataSelect from "@/lib/dataSelect";
+import { getObjectValue } from "@/lib/dataSelect";
 import InputFR from "./InputFR";
 import { Select2FR } from "./SelectFR";
-import {
-	ActionCreatorWithPayload,
-	Dispatch,
-	UnknownAction,
-} from "@reduxjs/toolkit";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
 import { MultiValue, SingleValue } from "react-select";
-import { postData } from "@/lib/crudGeneral";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { TypeVendor } from "@/lib/redux/slicer/VendorSlicer";
+import mataUang from "@/lib/mataUang";
+import TextareaFR from "./TextareaFR";
 
 export interface TypeItem {
-	[x: string]: any;
+	[x: string]: number | string | undefined;
 	key: string;
 	label: string;
 	type?: string;
@@ -32,71 +29,102 @@ type TypeOption = {
 };
 
 interface TypeInitVal {
-	value: { [x: string]: any };
+	value: {
+		[x: string]: unknown;
+	};
 	valid: { [x: string]: Yup.AnySchema };
 	routePost: string;
 	idPost: number;
 	slicer: ActionCreatorWithPayload<
-		{ key: number; data: any },
-		"biodata/biodataOneChange"
+		{ key: number; data: Record<string, unknown> },
+		// "biodata/biodataOneChange" | "biodata"
+		string
 	>;
+	items?: TypeItem;
+	data?: Record<string, unknown>;
 }
-// {
-// 	[x: string]: any;
-// 	idPost: number | string;
-// 	value: Record<string, any>;
-// 	routePost: string | undefined;
-// 	slicer:
-// 		| string
-// 		| ActionCreatorWithPayload<
-// 				{ key: number; data: TypeItem },
-// 				"biodata/biodataOneChange"
-// 		  >
-// 		| undefined;
-// 	valid: Record<string, Yup.AnySchema>;
-// }
 
+interface ToastStatePayload {
+	message: string;
+	status: "success" | "error" | "warning";
+	data?: unknown; // Adjust this to reflect your actual payload structure
+}
 interface TypeFormEditProps {
 	items: TypeItem;
 	initVal: TypeInitVal;
-	processReducer: ActionCreatorWithPayload<
-		any,
-		"processState/toastStateReducer"
-	>;
+	processReducer: ActionCreatorWithPayload<ToastStatePayload, string>;
 	labelBold: boolean;
 	formClass?: string;
 }
 
 interface TypeGetFormProps {
 	items: TypeItem;
-	value: string | TypeOption[] | null | undefined;
+	value: string | TypeOption[] | null | unknown;
 	error?: string;
 	touched?: boolean;
-	handleBlur: (e: React.FocusEvent<any>) => void;
+	handleBlur: (e: React.FocusEvent<HTMLElement>) => void;
 	handleChange: (
 		e: SingleValue<TypeOption> | MultiValue<TypeOption> | string
 	) => void;
-	setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+	setFieldValue: (
+		field: string,
+		value: unknown,
+		shouldValidate?: boolean
+	) => void;
 	formClass?: string;
 }
+
+export const initVal = ({
+	validate = Yup.string().required("Harus diisi"),
+	items,
+	idPost,
+	slicer,
+	routePost,
+	data,
+}: {
+	validate: Yup.AnySchema;
+	items: TypeItem;
+	idPost: number;
+	slicer: ActionCreatorWithPayload<
+		{ key: number; data: Record<string, unknown> },
+		string
+	>;
+	routePost: string;
+	data: Record<string, unknown>;
+}) => {
+	// Return the result with properly handled value extraction
+	return {
+		value: {
+			[items.key]: items.value
+				? items.value.includes(".")
+					? getObjectValue(data, items.value)
+					: data?.[items.value as keyof TypeVendor]
+				: undefined, // Handle undefined `items.value`
+		},
+		valid: {
+			[items.key]: validate,
+		},
+		routePost,
+		idPost,
+		slicer,
+	};
+};
 
 const FormEdit: FC<TypeFormEditProps> = ({
 	items,
 	initVal,
 	labelBold = false,
-	processReducer,
+	// processReducer,
 	formClass = "col-12 w-full",
 }) => {
 	// const props = usePage().props;
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 	useEffect(() => {
 		fetchCity();
 	}, []);
 	const [edit, setEdit] = useState(false);
 	const { city, loadingCity } = useSelector((state: RootState) => state.cities);
-	const { category, loadingCategory } = useSelector(
-		(state: RootState) => state.categories
-	);
+	const { category } = useSelector((state: RootState) => state.categories);
 
 	const GetForm: FC<TypeGetFormProps> = ({
 		items,
@@ -104,7 +132,7 @@ const FormEdit: FC<TypeFormEditProps> = ({
 		error,
 		touched,
 		handleBlur,
-		handleChange,
+		// handleChange,
 		setFieldValue,
 		formClass = "col-sm-10 col-12 grow",
 	}) => {
@@ -167,7 +195,25 @@ const FormEdit: FC<TypeFormEditProps> = ({
 				) : (
 					"Loading..."
 				);
-
+			case "about":
+			case "description":
+			case "terms_and_condition":
+				return (
+					<TextareaFR
+						id={items.key}
+						name={items.key}
+						className={formClass}
+						// placeholder='Leave a comment...'
+						values={value as string}
+						rows={10}
+						error={error}
+						touched={touched}
+						handleBlur={handleBlur}
+						handleChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+							setFieldValue(items.key, e.target.value);
+						}}
+					/>
+				);
 			default:
 				return (
 					<InputFR
@@ -182,41 +228,41 @@ const FormEdit: FC<TypeFormEditProps> = ({
 						type={items.type}
 						name={items.key}
 						id={items.key}
-						error={error}
-						touched={touched}
-						handleBlur={handleBlur}
 						handleChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							setFieldValue(items.key, e.target.value);
 						}}
 					/>
 				);
-				break;
 		}
 	};
 
-	const handleSend = async (data: Record<string, any>) => {
-		const form = new FormData();
-		// form.append("id", initVal.idPost);
-		// form.append("key", items.key);
-		// form.append([items.key], data[items.key]);
+	// const handleSend = async () =>
+	// 	// data: Record<string, any>
+	// 	{
+	// 		// const form = new FormData();
+	// 		// form.append("id", initVal.idPost);
+	// 		// form.append("key", items.key);
+	// 		// form.append([items.key], data[items.key]);
 
-		// await postData({
-		// 	dataForm: form,
-		// 	route: initVal.routePost,
-		// 	slicer: initVal.slicer,
-		// 	prosesReducer: processReducer,
-		// 	dispatch: dispatch,
-		//     start:
-		// });
-		setEdit(false);
-	};
+	// 		// await postData({
+	// 		// 	dataForm: form,
+	// 		// 	route: initVal.routePost,
+	// 		// 	slicer: initVal.slicer,
+	// 		// 	prosesReducer: processReducer,
+	// 		// 	dispatch: dispatch,
+	// 		//     start:
+	// 		// });
+	// 		setEdit(false);
+	// 	};
 
 	return (
 		<div className={`${formClass} mb-2`}>
 			{edit ? (
 				<Formik
 					initialValues={initVal.value}
-					onSubmit={(val) => handleSend(val)}
+					onSubmit={() => {
+						// handleSend(val)
+					}}
 					validationSchema={Yup.object(initVal.valid)}>
 					{({
 						handleSubmit,
@@ -291,7 +337,7 @@ interface ListTextProps {
 	itemKey: string;
 	label: string;
 	handleClick?: () => void;
-	text: string;
+	text: string | number | unknown;
 	formClass?: string;
 	labelBold?: boolean;
 }
@@ -304,9 +350,10 @@ export const ListText: FC<ListTextProps> = ({
 	formClass = "col-12 col-lg-6",
 	labelBold = false,
 }) => {
+	const nameMataUang = ["harga", "price"];
 	// Render without calling handleClick during render
 	return (
-		<div className={`${formClass} text-nowrap`}>
+		<div className={`${formClass} text-wrap`}>
 			<label htmlFor={itemKey} className={`${labelBold ? "font-bold" : ""}`}>
 				{label}
 			</label>
@@ -316,7 +363,7 @@ export const ListText: FC<ListTextProps> = ({
 				}`}
 				onClick={handleClick} // Execute handleClick on click
 			>
-				{text}
+				{nameMataUang.includes(itemKey) ? mataUang(Number(text)) : String(text)}
 			</p>
 		</div>
 	);

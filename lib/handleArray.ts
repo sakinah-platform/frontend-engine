@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 
 export type ArrayVisibility = Record<string, boolean | Record<string, boolean>>;
 const useShowArray = () => {
@@ -65,6 +65,48 @@ const useShowArray = () => {
 	return { openArray, openArrayinArray, closeArray, closeArrayinArray };
 };
 
+const useShowNav = () => {
+	const navigateToTab = (
+		setFunc: Dispatch<SetStateAction<Record<number, boolean>>>,
+		index: number
+	) => {
+		nonActiveButtonNav(setFunc, index);
+		activeButtonNav(setFunc, index);
+		// setShowNav(false);
+	};
+	const activeButtonNav = useCallback(
+		(
+			setButton: React.Dispatch<React.SetStateAction<Record<number, boolean>>>,
+			navIndex: number
+		) => {
+			setButton((prevVisibility) => ({
+				...prevVisibility,
+				[navIndex]: true,
+			}));
+		},
+		[]
+	);
+
+	const nonActiveButtonNav = useCallback(
+		(
+			setButton: React.Dispatch<React.SetStateAction<Record<number, boolean>>>,
+			navIndex: number
+		) => {
+			setButton((prevVisibility) =>
+				Object.fromEntries(
+					Object.keys(prevVisibility).map((key) => [
+						Number(key),
+						Number(key) === navIndex ? true : false,
+					])
+				)
+			);
+		},
+		[]
+	);
+
+	return { navigateToTab, activeButtonNav, nonActiveButtonNav };
+};
+
 const initializeArrayVisibility = (
 	data: Array<{ id: string }>
 ): ArrayVisibility => {
@@ -105,4 +147,5 @@ export {
 	initializeArrayVisibilityinArray,
 	initializeButtonNavActive,
 	useShowArray,
+	useShowNav,
 };
