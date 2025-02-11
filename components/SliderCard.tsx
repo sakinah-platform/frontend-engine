@@ -130,13 +130,14 @@ export const SliderPhotos = ({
 					},
 				}}
 				virtual>
-				{photos.map((item, i) => (
+				{photos?.map((item, i) => (
 					<SwiperSlide key={i} virtualIndex={i}>
 						<div className='relative mx-auto h-40 rounded-md p-2'>
 							<Image
 								fill
 								className='object-cover rounded-md'
-								src={`/photos/${item.image}`}
+								// src={`/photos/${item.image}`}
+								src={`${item.image}`}
 								alt={item.image}
 							/>
 						</div>

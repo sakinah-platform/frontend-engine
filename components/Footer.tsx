@@ -1,5 +1,5 @@
-import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faCopyright, faX } from "@fortawesome/free-solid-svg-icons";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 
@@ -19,20 +19,33 @@ export const Footer = () => {
 						<span>
 							<FontAwesomeIcon icon={faCopyright} /> 2024 Wedding Platform, Inc.
 						</span>
-						<ul className='flex flex-wrap items-center justify-center gap-5'>
+						{/* <ul className='flex flex-wrap items-center justify-center gap-5'>
 							<li>- Privacy</li>
 							<li>- Terms</li>
-							{/* <li>- Sitemap</li> */}
-						</ul>
+						</ul> */}
 					</div>
 					<div className='flex gap-2'>
 						{/* <span>
 							<FontAwesomeIcon icon={faGlobe} />
 							English (US)
 						</span> */}
-						<FontAwesomeIcon icon={faFacebook} />
-						<FontAwesomeIcon icon={faX} />
-						<FontAwesomeIcon icon={faInstagram} />
+						{/* <FontAwesomeIcon icon={faFacebook} />
+						<FontAwesomeIcon icon={faX} /> */}
+
+						<a
+							href='https://www.instagram.com/sakinahweddingplatform/'
+							target='_blank'
+							rel='noopener noreferrer'
+							// className='btn-primary py-2 px-4 rounded-full text-xl'
+						>
+							{/* <FontAwesomeIcon
+									icon={faInstagramSquare}
+									className='me-2'
+									size='xl'
+								/> */}
+
+							<FontAwesomeIcon icon={faInstagram} size='xl' />
+						</a>
 					</div>
 				</div>
 			</div>

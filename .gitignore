@@ -39,8 +39,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/public/banner*
-/public/photos*
+# /public/banner*
+# /public/photos*
 node_modules
 .vscode/**
 .idea/**
