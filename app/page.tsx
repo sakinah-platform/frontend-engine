@@ -15,6 +15,11 @@ import Image from "next/image";
 import { BannerWithText } from "@/components/BannerWithText";
 import { Footer } from "@/components/Footer";
 import { fetchVendorCategory } from "@/lib/redux/slicer/CategorySlicer";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+// 	faInstagram,
+// 	faInstagramSquare,
+// } from "@fortawesome/free-brands-svg-icons";
 
 export default function Home() {
 	// const [template, setTemplate] = useState(0);
@@ -78,7 +83,7 @@ export default function Home() {
 		{
 			content:
 				"Thank you for bringing my dream wedding to life! Prosesnya sangat smooth, dan kesabaran kalian terhadap setiap detail benar-benar kami hargai. Dekorasinya sangat memukau—teman-teman saya tidak berhenti membicarakan pernikahan kami yang berkesan!",
-			photo: "testi-1.png",
+			photo: "testi-1.jpeg",
 			bride: "Amy",
 			groom: "Dicky",
 			date: "August 2023",
@@ -86,9 +91,9 @@ export default function Home() {
 		{
 			content:
 				"A big thank you to all the teams that helped us execute our wedding. It was very good, even exceeded our expectations.",
-			photo: "testi-2.png",
-			bride: "Hinata",
-			groom: "Naruto",
+			photo: "testi-2.jpeg",
+			bride: "Gina",
+			groom: "Bayu",
 			date: "December 2023",
 		},
 		{
@@ -103,8 +108,8 @@ export default function Home() {
 			content:
 				"A big thank you to all the teams that helped us execute our wedding. It was very good, even exceeded our expectations.",
 			photo: "testi-4.png",
-			bride: "Yuli",
-			groom: "Samsul",
+			bride: "Zahra",
+			groom: "Fakhri",
 			date: "February 2024",
 		},
 	];
@@ -118,7 +123,7 @@ export default function Home() {
 			<div className='px-3 py-2 md:container mx-auto'>
 				<div className='md:mx-16 mt-16'>
 					<UpReveal>
-						<BannerWithText url='/banner/bg-1.png'>
+						<BannerWithText url='/banner/bg-1.jpeg' className='bg-center'>
 							<div className='pe-12 p-12 lg:p-28 font-bold text-lg lg:text-2xl'>
 								Ciptakan moment pernikahan
 								<br />
@@ -312,8 +317,23 @@ export default function Home() {
 						</div>
 						<div className='text-center text-md md:text-lg lg:text-2xl xl:text-3xl p-10'>
 							{/* Because you deserve your own fairy-tale to come true */}
-							Karena kamu layak menjadikan pernikahan impianmu menjadi kenyataan
-							<br />
+							<div className='mb-3'>
+								Karena kamu layak menjadikan pernikahan impianmu menjadi
+								kenyataan
+							</div>
+							{/* <br /> */}
+							<a
+								href='https://www.instagram.com/sakinahweddingplatform/'
+								target='_blank'
+								rel='noopener noreferrer'
+								className='btn-primary py-2 px-4 rounded-full text-xl'>
+								{/* <FontAwesomeIcon
+									icon={faInstagramSquare}
+									className='me-2'
+									size='xl'
+								/> */}
+								@sakinahweddingplatform
+							</a>
 							{/* <button type='button' className='btn-primary font-bold'>
 								Daftar sekarang yuk
 							</button> */}
