@@ -89,37 +89,37 @@ export default function ListVendor() {
 			title: "Every Venues and Vendors in town are ready to serve you",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/photo-1.png",
+			image: "photo-1.png",
 		},
 		{
 			title: "A fairy-tale wedding does not need to be expensive",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/photo-2.png",
+			image: "photo-2.png",
 		},
 		{
 			title: "Plan your wish for a fairy-tale wedding",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/photo-3.png",
+			image: "photo-3.png",
 		},
 		{
 			title: "Every Venues and Vendors in town are ready to serve you",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/vendor-1.jpeg",
+			image: "photo-1.png",
 		},
 		{
 			title: "A fairy-tale wedding does not need to be expensive",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/vendor-2.jpeg",
+			image: "photo-2.png",
 		},
 		{
 			title: "Plan your wish for a fairy-tale wedding",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/vendor-3.jpeg",
+			image: "photo-3.png",
 		},
 	];
 
