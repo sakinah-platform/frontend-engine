@@ -25,22 +25,22 @@ export const Footer = () => {
 							<li>- Privacy</li>
 							<li>- Terms</li>
 						</ul> */}
-						</div>
-						<div className='flex gap-2'>
-							{/* <span>
+            </div>
+            <div className="flex gap-2">
+              {/* <span>
 							<FontAwesomeIcon icon={faGlobe} />
 							English (US)
 						</span> */}
-							{/* <FontAwesomeIcon icon={faFacebook} />
+              {/* <FontAwesomeIcon icon={faFacebook} />
 						<FontAwesomeIcon icon={faX} /> */}
 
-							<a
-								href='https://www.instagram.com/sakinahweddingplatform/'
-								target='_blank'
-								rel='noopener noreferrer'
-								// className='btn-primary py-2 px-4 rounded-full text-xl'
-							>
-								{/* <FontAwesomeIcon
+              <a
+                href="https://www.instagram.com/sakinahweddingplatform/"
+                target="_blank"
+                rel="noopener noreferrer"
+                // className='btn-primary py-2 px-4 rounded-full text-xl'
+              >
+                {/* <FontAwesomeIcon
 									icon={faInstagramSquare}
 									className='me-2'
 									size='xl'
