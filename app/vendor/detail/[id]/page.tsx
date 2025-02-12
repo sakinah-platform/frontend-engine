@@ -353,7 +353,7 @@ export default function DetailVendor({
                     {selectedDetailVendor?.name}
                   </h1>
                   <h1 className="text-lg md:text-2xl max-w-[1000px] px-4">
-                    {selectedDetailVendor?.about}
+                    {selectedDetailVendor?.description}
                   </h1>
                 </div>
               </div>
@@ -361,12 +361,11 @@ export default function DetailVendor({
           </div>
           <div className="flex flex-col my-10 text-base md:text-xl justify-center items-center bg-white">
             <div className="mx-auto max-w-[320px] md:max-w-[650px] lg:max-w-[750px] mt-12 h-40 rounded-lg">
-              {/* <SliderPhotos photos={selectedDetailVendor?.galleries} qty={3} /> */}
+              <SliderPhotos photos={selectedDetailVendor?.galleries} qty={3} />
             </div>
             <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 px-10">
               <div className="max-w-[500px] text-gray-700">
                 <span>{selectedDetailVendor?.about}</span>
-                <p>{selectedDetailVendor?.description}</p>
               </div>
 
               {/* <div>
@@ -573,7 +572,7 @@ export default function DetailVendor({
                             className="w-28 h-28  lg:w-40 lg:h-40 relative"
                           >
                             <Image
-                              src={image.image}
+                              src={image.image || dataPackage[0].img}
                               alt={`Package image ${imgIndex + 1}`}
                               fill
                               className="object-cover rounded-md"
