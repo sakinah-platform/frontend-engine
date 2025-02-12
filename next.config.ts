@@ -2,13 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	env: {
-		sakinahAPI: "https://sakinah-be.hafiyyansayy.id",
+		sakinahAPI: "https://api.idsakinah.com",
 	},
 	images: {
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "sakinah-be.hafiyyansayy.id",
+				hostname: "api.idsakinah.com",
 				port: "",
 				pathname: "/media/**",
 			},
