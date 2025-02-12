@@ -1,7 +1,7 @@
 "use client";
 
 import { Button1 } from "@/components/Button1";
-import { MainNavbar } from "@/components/MainNavbar";
+
 import { SliderPhotos } from "@/components/SliderCard";
 // import { fetchDetailVendor } from "@/lib/redux/slicer/VendorDetailSlicer";
 import { AppDispatch, RootState } from "@/lib/store";
@@ -11,18 +11,15 @@ import {
 	faTiktok,
 	faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import {
-	faCopyright,
-	faEnvelope,
-	faGlobe,
-	faX,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { fetchVendor } from "@/lib/redux/slicer/VendorSlicer";
+import { Footer } from "@/components/Footer";
+import { MainNavbar } from "@/components/Navbar/Main";
 
 type Package = {
 	img: string;
@@ -348,9 +345,14 @@ export default function DetailVendor({
 						</div>
 					</div>
 					<div className='flex flex-col my-10 text-xl justify-center items-center bg-white'>
-						<div className='mx-auto max-w-[750px] mt-12 h-40 rounded-lg'>
-							<SliderPhotos photos={selectedDetailVendor?.galleries} qty={3} />
-						</div>
+						{selectedDetailVendor?.galleries?.length > 0 && (
+							<div className='mx-auto max-w-[750px] mt-12 h-40 rounded-lg'>
+								<SliderPhotos
+									photos={selectedDetailVendor?.galleries}
+									qty={3}
+								/>
+							</div>
+						)}
 						<div className='container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 '>
 							<div className='max-w-[500px] text-gray-700'>
 								<span>{selectedDetailVendor?.about}</span>
@@ -657,39 +659,9 @@ export default function DetailVendor({
           )}
         </div>
       </div> */}
-
-					<div className='bg-primary text-white md:px-32 px-16 pt-3 pb-2 shadow-lg rounded-t-2xl shadow-lg'>
-						<div className='text-center pb-1 bg-white rounded-full w-24 mx-auto'></div>
-						<div className='shadow-lg text-white rounded-lg mt-10'>
-							<div className='text-3xl font-bold mt-3'>Wedding Platform</div>
-							<span className='text-md'>Tagline Here</span>
-							<hr />
-							<div className='flex text-xs py-3 justify-between'>
-								<div className='flex gap-8'>
-									<span>
-										<FontAwesomeIcon icon={faCopyright} /> 2024 Wedding
-										Platform, Inc.
-									</span>
-									<ul className='flex flex-wrap items-center justify-center gap-5'>
-										<li>- Privacy</li>
-										<li>- Terms</li>
-										<li>- Sitemap</li>
-									</ul>
-								</div>
-								<div className='flex gap-2'>
-									<span>
-										<FontAwesomeIcon icon={faGlobe} />
-										English (US)
-									</span>
-									<FontAwesomeIcon icon={faFacebook} />
-									<FontAwesomeIcon icon={faX} />
-									<FontAwesomeIcon icon={faInstagram} />
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			)}
+			<Footer />
 		</div>
 	);
 }
