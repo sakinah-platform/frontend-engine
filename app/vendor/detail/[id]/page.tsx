@@ -328,10 +328,6 @@ export default function DetailVendor({
                 <p className="text-lg">
                   {selectedDetailVendor?.packages?.[currentPackageIndex]?.price}
                 </p>
-                <h3 className="text-lg font-semibold mt-6">Price</h3>
-                <p className="text-lg">
-                  {selectedDetailVendor?.packages?.[currentPackageIndex]?.price}
-                </p>
                 <h3 className="text-lg font-semibold mt-6">
                   Therms and Condiion
                 </h3>
