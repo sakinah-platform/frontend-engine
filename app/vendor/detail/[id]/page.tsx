@@ -183,7 +183,7 @@ export default function DetailVendor({
   const closeModal = () => setIsModalOpen(false);
 
   // const dispatch = useDispatch<AppDispatch>();
-  const { detailVendor, loadingDetailVendor } = useSelector(
+  const { detailVendor, vendorPackages, loadingDetailVendor } = useSelector(
     (state: RootState) => state.detailVendor
   );
 
@@ -193,6 +193,12 @@ export default function DetailVendor({
 
   const dispatch = useDispatch<AppDispatch>();
 
+  // const selectedVendorPackages = Array.isArray(vendorPackages)
+  //   ? vendorPackages[0]
+  //   : vendorPackages;
+
+  console.log("CONSOLE>>>>>", detailVendor);
+
   useEffect(() => {
     (async () => {
       try {
@@ -200,7 +206,8 @@ export default function DetailVendor({
         const { id } = await params;
 
         // Dispatch the fetchVendor action with the resolved idVendor
-        dispatch(fetchDetailVendor({ basePath: id }));
+        dispatch(fetchDetailVendor({ basePath: `${id}` }));
+        dispatch(fetchDetailVendor({ basePath: `${id}/packages/` }));
       } catch (error) {
         console.error("Failed to fetch vendor:", error);
       }
@@ -210,6 +217,11 @@ export default function DetailVendor({
   const handleProductClick = (index: number) => {
     setCurrentPackageIndex(index);
     openModal();
+    console.log(index);
+    console.log(
+      "detailVendor?.packages[currentIndex]?.name",
+      detailVendor?.packages[currentIndex]?.name
+    );
   };
 
   const totalItems = dataPackage.length;
@@ -337,7 +349,7 @@ export default function DetailVendor({
                       className="object-cover w-[250px] h-[250px] md:w-full md:h-full"
                     />
                   </div>
-                  <h1 className="text-xl md:text-3xl mt-44">
+                  <h1 className="text-xl md:text-3xl mt-[450px] md:mt-80 ">
                     {selectedDetailVendor?.name}
                   </h1>
                   <h1 className="text-lg md:text-2xl max-w-[1000px] px-4">
@@ -349,7 +361,7 @@ export default function DetailVendor({
           </div>
           <div className="flex flex-col my-10 text-base md:text-xl justify-center items-center bg-white">
             <div className="mx-auto max-w-[320px] md:max-w-[650px] lg:max-w-[750px] mt-12 h-40 rounded-lg">
-              <SliderPhotos photos={photos} qty={3} />
+              {/* <SliderPhotos photos={selectedDetailVendor?.galleries} qty={3} /> */}
             </div>
             <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 px-10">
               <div className="max-w-[500px] text-gray-700">
@@ -449,7 +461,7 @@ export default function DetailVendor({
                     }%)`,
                   }}
                 >
-                  {dataPackage.map((item, index) => (
+                  {detailVendor?.packages?.map((item, index) => (
                     <div
                       key={index}
                       className="flex-shrink-0 rounded-lg flex-col mb-4 border shadow-lg mx-5 cursor-pointer w-[250px] lg:w-[300px] hover:bg-secondary2"
@@ -457,7 +469,7 @@ export default function DetailVendor({
                     >
                       <div className="rounded-t-lg overflow-hidden w-[250px] lg:w-[300px] h-72">
                         <Image
-                          src={item.img}
+                          src={item?.galleries[0]?.image || dataPackage[0].img}
                           alt={item.name}
                           width={200}
                           height={100}
@@ -546,47 +558,71 @@ export default function DetailVendor({
                 text="Package Description"
                 className="w-[300px] md:w-[500px] lg:w-[700px] text-sm md:text-lg"
               /> */}
-                  <div className="flex flex-col justify-center gap-10 w-full lg:max-w-[1000px]">
+                  {/* {detailVendor?.packages?.map((item, index) => ( */}
+                  <div className="flex flex-col justify-center gap-10 w-full lg:max-w-[800px]">
                     <h1 className="text-2xl font-bold mb-4 text-center">
-                      {dataPackageDesc[currentPackageIndex].title}
+                      {detailVendor?.packages[currentPackageIndex]?.name}
                     </h1>
                     <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-10">
                       <div className="grid grid-cols-2 gap-2 lg:gap-4">
-                        {dataPackageDesc[currentPackageIndex].img.map(
-                          (image, imgIndex) => (
-                            <div
-                              key={imgIndex}
-                              className="w-28 h-28  lg:w-40 lg:h-40 relative"
-                            >
-                              <Image
-                                src={image}
-                                alt={`Package image ${imgIndex + 1}`}
-                                fill
-                                className="object-cover rounded-md"
-                              />
-                            </div>
-                          )
-                        )}
+                        {detailVendor?.packages[
+                          currentPackageIndex
+                        ]?.galleries.map((image, imgIndex) => (
+                          <div
+                            key={imgIndex}
+                            className="w-28 h-28  lg:w-40 lg:h-40 relative"
+                          >
+                            <Image
+                              src={image.image}
+                              alt={`Package image ${imgIndex + 1}`}
+                              fill
+                              className="object-cover rounded-md"
+                            />
+                          </div>
+                        ))}
                       </div>
 
                       <div className="mt-4">
-                        <h3 className="text-lg font-semibold">Decoration</h3>
-                        <ul className="text-base list-disc list-inside">
-                          {dataPackageDesc[currentPackageIndex].decoration.map(
-                            (decor, decorIndex) => (
+                        <h3 className="text-lg font-semibold">Description</h3>
+                        <p className="text-lg">
+                          {
+                            detailVendor?.packages[currentPackageIndex]
+                              ?.description
+                          }
+                        </p>
+                        <h3 className="text-lg font-semibold mt-6">Price</h3>
+                        <p className="text-lg">
+                          {detailVendor?.packages[currentPackageIndex]?.price}
+                        </p>
+                        <h3 className="text-lg font-semibold mt-6">Price</h3>
+                        <p className="text-lg">
+                          {detailVendor?.packages[currentPackageIndex]?.price}
+                        </p>
+                        <h3 className="text-lg font-semibold mt-6">
+                          Therms and Condiion
+                        </h3>
+                        <p className="text-lg">
+                          {
+                            detailVendor?.packages[currentPackageIndex]
+                              ?.terms_and_condition
+                          }
+                        </p>
+                        {/* <ul className="text-base list-disc list-inside">
+                            {dataPackageDesc[
+                              currentPackageIndex
+                            ].decoration.map((decor, decorIndex) => (
                               <li key={decorIndex}>{decor}</li>
-                            )
-                          )}
-                        </ul>
+                            ))}
+                          </ul>
 
-                        <h3 className="text-lg font-semibold mt-4">Crew</h3>
-                        <ul className="text-base list-disc list-inside">
-                          {dataPackageDesc[currentPackageIndex].crew.map(
-                            (crewMember, crewIndex) => (
-                              <li key={crewIndex}>{crewMember}</li>
-                            )
-                          )}
-                        </ul>
+                          <h3 className="text-lg font-semibold mt-4">Crew</h3>
+                          <ul className="text-base list-disc list-inside">
+                            {dataPackageDesc[currentPackageIndex].crew.map(
+                              (crewMember, crewIndex) => (
+                                <li key={crewIndex}>{crewMember}</li>
+                              )
+                            )}
+                          </ul> */}
                       </div>
                     </div>
                   </div>
@@ -667,7 +703,7 @@ export default function DetailVendor({
         </div>
       </div> */}
 
-          <div className="bg-primary text-white md:px-32 px-16 pt-3 pb-2 shadow-lg rounded-t-2xl shadow-lg">
+          <div className="bg-primary text-white md:px-32 px-16 pt-3 pb-2 rounded-t-2xl shadow-lg">
             <div className="text-center pb-1 bg-white rounded-full w-24 mx-auto"></div>
             <div className="shadow-lg text-white rounded-lg mt-10">
               <div className="text-3xl font-bold mt-3">Wedding Platform</div>

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export interface DetailVendorType {
-  [key: string]: number | string | boolean;
+export interface TypeVendorDetail {
+  [key: string]: number | string | boolean | Object;
   id: number;
   name: string;
   description: string;
@@ -16,36 +16,44 @@ export interface DetailVendorType {
   profile_image: string;
   availability: boolean;
   visibility: string;
+  packages: TypeVendorPackages[];
 }
 
+export interface TypeVendorPackages {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  // first_image: string;
+  galleries: TypeVendorPackagesGalleries[];
+  terms_and_condition: string;
+}
+
+export interface TypeVendorPackagesGalleries {
+  id: number;
+  name: string;
+  image: string;
+}
 interface GenericState<T> {
-  detailVendor: T[];
+  detailVendor: T | null; // Now allows a single object or null
+  vendorPackages: TypeVendorPackages[]; // Separate array for packages
   loadingDetailVendor: boolean;
   error: string | null;
 }
 
-const initialState: GenericState<DetailVendorType> = {
-  detailVendor: [],
+const initialState: GenericState<TypeVendorDetail> = {
+  detailVendor: null, // Initially null, not an array
+  vendorPackages: [],
   loadingDetailVendor: false,
   error: null,
 };
-
-// export const fetchDetailVendor = createAsyncThunk(
-//   "master_data/vendors/1",
-//   async (): Promise<[DetailVendorType]> => {
-//     const response = await axios.get(
-//       `${process.env.sakinahAPI}/master_data/vendors/1`
-//     );
-//     return response.data.results;
-//   }
-// );
 
 export const fetchDetailVendor = createAsyncThunk(
   "master_data/vendors",
   async (params?: {
     basePath?: string | number; // Optional base path
     queryParams?: Record<string, string | number | undefined>; // Query parameters
-  }): Promise<[DetailVendorType]> => {
+  }): Promise<TypeVendorDetail | TypeVendorPackages> => {
     const { basePath, queryParams } = params || {};
 
     // Construct query parameters dynamically
@@ -64,9 +72,11 @@ export const fetchDetailVendor = createAsyncThunk(
     }${queryString ? `?${queryString}` : ""}`;
 
     const response = await axios.get(url);
-    // console.log(basePath ? "ok" : queryString, url);
 
-    return basePath ? response.data : response.data.results;
+    // Return different data structures based on basePath presence
+    return basePath
+      ? (response.data as TypeVendorDetail)
+      : (response.data.results as TypeVendorPackages);
   }
 );
 
@@ -76,10 +86,6 @@ const detailVendorSlice = createSlice({
   reducers: {
     start(state) {
       state.loadingDetailVendor = true;
-    },
-    detailVendorReducer(state, action: PayloadAction<DetailVendorType[]>) {
-      state.loadingDetailVendor = false;
-      state.detailVendor = [...state.detailVendor, ...action.payload];
     },
     failure(state, action: PayloadAction<string>) {
       state.loadingDetailVendor = false;
@@ -92,17 +98,23 @@ const detailVendorSlice = createSlice({
     });
     builder.addCase(fetchDetailVendor.fulfilled, (state, action) => {
       console.log(action.payload);
-      state.detailVendor = action.payload;
-
+      if (Array.isArray(action.payload)) {
+        // If payload is an array, it's vendor packages
+        state.vendorPackages = action.payload;
+        console.log("vendorPackages", action.payload);
+      } else {
+        // If payload is an object, it's vendor details
+        state.detailVendor = action.payload as TypeVendorDetail;
+        console.log("vendorDetail", action.payload);
+      }
       state.loadingDetailVendor = false;
     });
+
     builder.addCase(fetchDetailVendor.rejected, (state) => {
       state.loadingDetailVendor = false;
     });
   },
 });
 
-// Export the reducer and actions
-export const { start, detailVendorReducer, failure } =
-  detailVendorSlice.actions;
+export const { start, failure } = detailVendorSlice.actions;
 export default detailVendorSlice.reducer;
