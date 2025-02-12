@@ -75,7 +75,7 @@ export default function Home() {
 			title: "Kami bantu rencanakan pernikahan impian anda",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "photo-3.png",
+			image: "vendor-7.jpeg",
 		},
 	];
 
@@ -91,7 +91,7 @@ export default function Home() {
 		{
 			content:
 				"A big thank you to all the teams that helped us execute our wedding. It was very good, even exceeded our expectations.",
-			photo: "testi-2.jpeg",
+			photo: "vendor-0.jpeg",
 			bride: "Gina",
 			groom: "Bayu",
 			date: "December 2023",
@@ -165,7 +165,7 @@ export default function Home() {
 										className={`font-alice font-bold underline underline-offset-4 md:text-lg lg:text-2xl`}>
 										Layanan apa yang dibutuhkan untuk pernikahan Anda?
 									</div>
-									<div className='grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-4 justify-items-center mt-3 mb-2'>
+									<div className='grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-4 justify-items-center mt-3 mb-2'>
 										{category
 											?.slice()
 											?.sort((a, b) => a.name[0].localeCompare(b.name[0]))
@@ -192,7 +192,7 @@ export default function Home() {
 											className='flex shadow rounded-lg p-3 w-48 text-start items-center transition hover:bg-secondary2 hover:shadow-lg'>
 											<div className='relative w-10 h-10'>
 												<Image
-													src={"/logo/PNG/tertiary_1.png"}
+													src={"/logo/PNG/submark_2.png"}
 													alt={"Semua Kategori"}
 													fill
 													className='object-cover'
@@ -308,8 +308,8 @@ export default function Home() {
 								);
 							})}
 						</div>
-						<div className='bg-secondary2 my-3 xl:mx-24 sm:mx-auto shadow text-center text-md md:text-lg lg:text-2xl py-8 overflow-hidden rounded-lg shadow-lg p-8 2xl:px-36 xl:px-8 lg:px-0 md:px-4 px-2'>
-							<div className='font-bold pb-5'>
+						<div className='bg-primary2 my-3 xl:mx-24 sm:mx-auto shadow text-center text-md md:text-lg lg:text-2xl py-8 overflow-hidden rounded-lg shadow-lg p-8 2xl:px-36 xl:px-8 lg:px-0 md:px-4 px-2'>
+							<div className='font-bold text-white pb-5'>
 								{/* Hear the testimony directly from our satisfied bride and groom */}
 								Cerita mereka tentang layanan kami
 							</div>
@@ -321,19 +321,28 @@ export default function Home() {
 								Karena kamu layak menjadikan pernikahan impianmu menjadi
 								kenyataan
 							</div>
+
+							<div className='flex justify-center gap-2'>
+								{Array.from({ length: 3 }).map((_, i) => (
+									<div className='relative w-12 h-12' key={i}>
+										<Image
+											src={"/logo/PNG/tertiary_1.png"}
+											alt={"bintang"}
+											fill
+											className='object-cover'
+										/>
+									</div>
+								))}
+							</div>
+
 							{/* <br /> */}
-							<a
+							{/* <a
 								href='https://www.instagram.com/sakinahweddingplatform/'
 								target='_blank'
 								rel='noopener noreferrer'
 								className='btn-primary py-2 px-4 rounded-full text-xl'>
-								{/* <FontAwesomeIcon
-									icon={faInstagramSquare}
-									className='me-2'
-									size='xl'
-								/> */}
 								@sakinahweddingplatform
-							</a>
+							</a> */}
 							{/* <button type='button' className='btn-primary font-bold'>
 								Daftar sekarang yuk
 							</button> */}

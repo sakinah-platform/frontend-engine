@@ -40,7 +40,7 @@ export const MainNavbar = () => {
 			className='w-[95%] mx-auto rounded-b-2xl shadow fixed left-0 right-0 z-50'
 			fluid
 			rounded
-			aria-hidden='true'
+			// aria-hidden='true'
 			role='navigation'>
 			<Navbar.Brand href='/'>
 				<div className='relative w-36 h-8 m-2'>

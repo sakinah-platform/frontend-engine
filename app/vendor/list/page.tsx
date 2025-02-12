@@ -89,31 +89,31 @@ export default function ListVendor() {
 			title: "Every Venues and Vendors in town are ready to serve you",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/photo-1.png",
+			image: "/photos/slide-1.jpeg",
 		},
 		{
 			title: "A fairy-tale wedding does not need to be expensive",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/photo-2.png",
+			image: "/photos/slide-2.jpeg",
 		},
 		{
 			title: "Plan your wish for a fairy-tale wedding",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/photo-3.png",
+			image: "/photos/slide-3.jpeg",
 		},
 		{
 			title: "Every Venues and Vendors in town are ready to serve you",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/vendor-1.jpeg",
+			image: "/photos/slide-4.jpeg",
 		},
 		{
 			title: "A fairy-tale wedding does not need to be expensive",
 			desc: "This is the Description for Wedding Venues and Vendors feature",
 			link: "#",
-			image: "/photos/vendor-2.jpeg",
+			image: "/photos/slide-5.jpeg",
 		},
 		{
 			title: "Plan your wish for a fairy-tale wedding",
@@ -267,14 +267,14 @@ export default function ListVendor() {
 												className='shadow-lg rounded-tl-3xl rounded-br-3xl p-4 bg-white cursor-pointer'
 												onClick={() => router.push(`/vendor/detail/${item.id}`)}
 												key={i}>
-												<div className='border-2 border-primary rounded-tl-3xl rounded-br-3xl rounded-lg'>
+												<div className='border-2 border-primary rounded-tl-3xl h-full rounded-br-3xl rounded-lg'>
 													<div className='relative w-82 min-h-40 max-h-64'>
 														<Image
 															// src={`/photos/vendor-${urutan % 7}.jpeg`}
 															src={item.profile_image}
 															alt='banner'
 															fill
-															className='shadow-lg object-cover rounded-tl-3xl rounded-tr-md rounded-bl-md border-b-2 border-primary'
+															className='shadow-lg object-fit rounded-tl-3xl rounded-tr-md rounded-bl-md border-b-2 border-primary'
 														/>
 													</div>
 													<div className='relative p-5 -mt-10 text-sm capitalize'>
