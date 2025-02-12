@@ -1,7 +1,7 @@
 "use client";
 
 import { Button1 } from "@/components/Button1";
-import { MainNavbar } from "@/components/MainNavbar";
+
 import { SliderPhotos } from "@/components/SliderCard";
 import { fetchDetailVendor } from "@/lib/redux/slicer/VendorDetailSlicer";
 import { AppDispatch, RootState } from "@/lib/store";
@@ -11,17 +11,16 @@ import {
   faTiktok,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import {
-  faCopyright,
-  faEnvelope,
-  faGlobe,
-  faX,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { fetchVendor } from "@/lib/redux/slicer/VendorSlicer";
+import { Footer } from "@/components/Footer";
+import { MainNavbar } from "@/components/Navbar/Main";
+import { Button, Modal } from "flowbite-react";
 
 type Package = {
   img: string;
@@ -135,69 +134,58 @@ export default function DetailVendor({
       ],
     },
   ];
-  const photos = [
-    {
-      title: "Every Venues and Vendors in town are ready to serve you",
-      desc: "This is the Description for Wedding Venues and Vendors feature",
-      link: "#",
-      image: "photo-1.png",
-    },
-    {
-      title: "A fairy-tale wedding does not need to be expensive",
-      desc: "This is the Description for Wedding Venues and Vendors feature",
-      link: "#",
-      image: "photo-2.png",
-    },
-    {
-      title: "Plan your wish for a fairy-tale wedding",
-      desc: "This is the Description for Wedding Venues and Vendors feature",
-      link: "#",
-      image: "photo-3.png",
-    },
-    {
-      title: "Every Venues and Vendors in town are ready to serve you",
-      desc: "This is the Description for Wedding Venues and Vendors feature",
-      link: "#",
-      image: "photo-1.png",
-    },
-    {
-      title: "A fairy-tale wedding does not need to be expensive",
-      desc: "This is the Description for Wedding Venues and Vendors feature",
-      link: "#",
-      image: "photo-2.png",
-    },
-    {
-      title: "Plan your wish for a fairy-tale wedding",
-      desc: "This is the Description for Wedding Venues and Vendors feature",
-      link: "#",
-      image: "photo-3.png",
-    },
-  ];
+  // const photos = [
+  // 	{
+  // 		title: "Every Venues and Vendors in town are ready to serve you",
+  // 		desc: "This is the Description for Wedding Venues and Vendors feature",
+  // 		link: "#",
+  // 		image: "photo-1.png",
+  // 	},
+  // 	{
+  // 		title: "A fairy-tale wedding does not need to be expensive",
+  // 		desc: "This is the Description for Wedding Venues and Vendors feature",
+  // 		link: "#",
+  // 		image: "photo-2.png",
+  // 	},
+  // 	{
+  // 		title: "Plan your wish for a fairy-tale wedding",
+  // 		desc: "This is the Description for Wedding Venues and Vendors feature",
+  // 		link: "#",
+  // 		image: "photo-3.png",
+  // 	},
+  // 	{
+  // 		title: "Every Venues and Vendors in town are ready to serve you",
+  // 		desc: "This is the Description for Wedding Venues and Vendors feature",
+  // 		link: "#",
+  // 		image: "photo-1.png",
+  // 	},
+  // 	{
+  // 		title: "A fairy-tale wedding does not need to be expensive",
+  // 		desc: "This is the Description for Wedding Venues and Vendors feature",
+  // 		link: "#",
+  // 		image: "photo-2.png",
+  // 	},
+  // 	{
+  // 		title: "Plan your wish for a fairy-tale wedding",
+  // 		desc: "This is the Description for Wedding Venues and Vendors feature",
+  // 		link: "#",
+  // 		image: "photo-3.png",
+  // 	},
+  // ];
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(3);
   const [currentPackageIndex, setCurrentPackageIndex] = useState(0);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   // const dispatch = useDispatch<AppDispatch>();
-  const { detailVendor, vendorPackages, loadingDetailVendor } = useSelector(
-    (state: RootState) => state.detailVendor
+  const { vendor, loadingVendor } = useSelector(
+    (state: RootState) => state.vendors
   );
 
-  const selectedDetailVendor = Array.isArray(detailVendor)
-    ? detailVendor[0]
-    : detailVendor;
+  const selectedDetailVendor = Array.isArray(vendor) ? vendor[0] : vendor;
 
   const dispatch = useDispatch<AppDispatch>();
-
-  // const selectedVendorPackages = Array.isArray(vendorPackages)
-  //   ? vendorPackages[0]
-  //   : vendorPackages;
-
-  console.log("CONSOLE>>>>>", detailVendor);
 
   useEffect(() => {
     (async () => {
@@ -214,14 +202,24 @@ export default function DetailVendor({
     })();
   }, [params, dispatch]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        // Wait for the idVendor promise to resolve
+        const { id } = await params;
+
+        // Dispatch the fetchVendor action with the resolved idVendor
+        // dispatch(fetchDetailVendor({ basePath: id }));
+        dispatch(fetchVendor({ basePath: id }));
+      } catch (error) {
+        console.error("Failed to fetch vendor:", error);
+      }
+    })();
+  }, [params, dispatch]);
+
   const handleProductClick = (index: number) => {
     setCurrentPackageIndex(index);
-    openModal();
-    console.log(index);
-    console.log(
-      "detailVendor?.packages[currentIndex]?.name",
-      detailVendor?.packages[currentIndex]?.name
-    );
+    setOpenModal(true);
   };
 
   const totalItems = dataPackage.length;
@@ -306,7 +304,7 @@ export default function DetailVendor({
     <div className="bg-white">
       <MainNavbar />
 
-      {loadingDetailVendor ? (
+      {loadingVendor ? (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white z-50">
           <div className="text-center text-primary">
             Sebentar ya...
@@ -346,10 +344,10 @@ export default function DetailVendor({
                       alt="Picture of the author"
                       width={500}
                       height={500}
-                      className="object-cover w-[250px] h-[250px] md:w-full md:h-full"
+                      className="w-full h-full"
                     />
                   </div>
-                  <h1 className="text-xl md:text-3xl mt-[450px] md:mt-80 ">
+                  <h1 className="text-xl md:text-3xl mt-[200px] md:mt-80 ">
                     {selectedDetailVendor?.name}
                   </h1>
                   <h1 className="text-lg md:text-2xl max-w-[1000px] px-4">
@@ -360,24 +358,29 @@ export default function DetailVendor({
             </div>
           </div>
           <div className="flex flex-col my-10 text-base md:text-xl justify-center items-center bg-white">
-            <div className="mx-auto max-w-[320px] md:max-w-[650px] lg:max-w-[750px] mt-12 h-40 rounded-lg">
-              <SliderPhotos photos={selectedDetailVendor?.galleries} qty={3} />
-            </div>
-            <div className="container mt-16 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 px-10">
+            {selectedDetailVendor?.galleries?.length > 0 && (
+              <div className="mx-auto max-w-[750px] mt-12 h-40 rounded-lg">
+                <SliderPhotos
+                  photos={selectedDetailVendor?.galleries}
+                  qty={3}
+                />
+              </div>
+            )}
+            <div className="container mt-36 flex flex-col md:flex-row justify-center gap-20 lg:gap-40 mx-20 px-10">
               <div className="max-w-[500px] text-gray-700">
                 <span>{selectedDetailVendor?.about}</span>
               </div>
 
               {/* <div>
-            {dataContact.map((items, i) => (
-              <div className="flex items-center gap-4 mb-4" key={i}>
-                <FontAwesomeIcon icon={items.icon} />
-                <span>{selectedDetailVendor?.[items.name]}</span>
-              </div>
-            ))}
-          </div> */}
+                {dataContact.map((items, i) => (
+                  <div className="flex items-center gap-4 mb-4" key={i}>
+                    <FontAwesomeIcon icon={items.icon} />
+                    <span>{selectedDetailVendor?.[items.name]}</span>
+                  </div>
+                ))}
+              </div> */}
               <div>
-                {loadingDetailVendor
+                {loadingVendor
                   ? "Loading..."
                   : socialMediaLinks
                       .filter((link) => link.value)
@@ -460,7 +463,7 @@ export default function DetailVendor({
                     }%)`,
                   }}
                 >
-                  {detailVendor?.packages?.map((item, index) => (
+                  {selectedDetailVendor?.packages?.map((item, index) => (
                     <div
                       key={index}
                       className="flex-shrink-0 rounded-lg flex-col mb-4 border shadow-lg mx-5 cursor-pointer w-[250px] lg:w-[300px] hover:bg-secondary2"
@@ -491,158 +494,44 @@ export default function DetailVendor({
                 &gt;
               </button>
             </div>
-
-            {/* <div className="relative mt-20 max-w-[500px] md:max-w-[750px] lg:max-w-[1000px] flex items-center">
-          <button
-            onClick={handlePrev}
-            className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
-          >
-            &lt;
-          </button>
-
-          <div className="overflow-hidden w-full">
-            <div
-              className="flex transition-transform duration-300"
-              style={{
-                transform: `translateX(-${
-                  currentIndex * (100 / visibleItems)
-                }%)`,
-              }}
-            >
-              {dataPackage.map((item: Package, index: number) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 rounded-lg flex-col mb-4 border shadow-lg mx-5 cursor-pointer"
-                  onClick={() => handleProductClick(index)}
-                >
-                  <div className="rounded-t-lg overflow-hidden w-72 h-72">
-                    <Image
-                      src={item.img}
-                      alt={item.name}
-                      width={500}
-                      height={500}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-xl">{item.name}</p>
-                    <p className="pt-1">{item.price}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <button
-            onClick={handleNext}
-            className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 z-10 text-3xl text-gray-500 rounded-full px-4 py-[10px] hover:bg-gray-200"
-          >
-            &gt;
-          </button>
-        </div> */}
-          </div>
-
-          {isModalOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
-              <div className="relative bg-white rounded-lg px-20 py-20">
-                {/* Second div content */}
-                <div className="flex flex-col text-2xl justify-center items-center">
-                  <button
-                    onClick={closeModal}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-                  >
-                    ✖
-                  </button>
-                  {/* <Button1
-                text="Package Description"
-                className="w-[300px] md:w-[500px] lg:w-[700px] text-sm md:text-lg"
-              /> */}
-                  {/* {detailVendor?.packages?.map((item, index) => ( */}
-                  <div className="flex flex-col justify-center gap-10 w-full lg:max-w-[800px]">
-                    <h1 className="text-2xl font-bold mb-4 text-center">
-                      {detailVendor?.packages[currentPackageIndex]?.name}
-                    </h1>
-                    <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-10">
-                      <div className="grid grid-cols-2 gap-2 lg:gap-4">
-                        {detailVendor?.packages[
-                          currentPackageIndex
-                        ]?.galleries.map((image, imgIndex) => (
-                          <div
-                            key={imgIndex}
-                            className="w-28 h-28  lg:w-40 lg:h-40 relative"
-                          >
-                            <Image
-                              src={image.image || dataPackage[0].img}
-                              alt={`Package image ${imgIndex + 1}`}
-                              fill
-                              className="object-cover rounded-md"
-                            />
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="mt-4">
-                        <h3 className="text-lg font-semibold">Description</h3>
-                        <p className="text-lg">
-                          {
-                            detailVendor?.packages[currentPackageIndex]
-                              ?.description
-                          }
-                        </p>
-                        <h3 className="text-lg font-semibold mt-6">Price</h3>
-                        <p className="text-lg">
-                          {detailVendor?.packages[currentPackageIndex]?.price}
-                        </p>
-                        <h3 className="text-lg font-semibold mt-6">Price</h3>
-                        <p className="text-lg">
-                          {detailVendor?.packages[currentPackageIndex]?.price}
-                        </p>
-                        <h3 className="text-lg font-semibold mt-6">
-                          Therms and Condiion
-                        </h3>
-                        <p className="text-lg">
-                          {
-                            detailVendor?.packages[currentPackageIndex]
-                              ?.terms_and_condition
-                          }
-                        </p>
-                        {/* <ul className="text-base list-disc list-inside">
-                            {dataPackageDesc[
-                              currentPackageIndex
-                            ].decoration.map((decor, decorIndex) => (
-                              <li key={decorIndex}>{decor}</li>
-                            ))}
-                          </ul>
-
-                          <h3 className="text-lg font-semibold mt-4">Crew</h3>
-                          <ul className="text-base list-disc list-inside">
-                            {dataPackageDesc[currentPackageIndex].crew.map(
-                              (crewMember, crewIndex) => (
-                                <li key={crewIndex}>{crewMember}</li>
-                              )
-                            )}
-                          </ul> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between mt-6">
-                  <button
-                    onClick={handleModalPrev}
-                    className="text-3xl text-gray-500 hover:text-black"
-                  >
-                    &lt;
-                  </button>
-                  <button
-                    onClick={handleModalNext}
-                    className="text-3xl text-gray-500 hover:text-black"
-                  >
-                    &gt;
-                  </button>
+          <Modal show={openModal} onClose={() => setOpenModal(false)}>
+            <Modal.Header>Terms of Service</Modal.Header>
+            <Modal.Body>
+              <div className="space-y-6">
+                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                  {selectedDetailVendor?.packages[currentPackageIndex]?.name}
+                </p>
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold">Description</h3>
+                  <p className="text-lg">
+                    {
+                      selectedDetailVendor?.packages[currentPackageIndex]
+                        ?.description
+                    }
+                  </p>
+                  <h3 className="text-lg font-semibold mt-6">Price</h3>
+                  <p className="text-lg">
+                    {selectedDetailVendor?.packages[currentPackageIndex]?.price}
+                  </p>
+                  <h3 className="text-lg font-semibold mt-6">Price</h3>
+                  <p className="text-lg">
+                    {selectedDetailVendor?.packages[currentPackageIndex]?.price}
+                  </p>
+                  <h3 className="text-lg font-semibold mt-6">
+                    Therms and Condiion
+                  </h3>
+                  <p className="text-lg">
+                    {
+                      selectedDetailVendor?.packages[currentPackageIndex]
+                        ?.terms_and_condition
+                    }
+                  </p>
                 </div>
               </div>
-            </div>
-          )}
+            </Modal.Body>
+          </Modal>
 
           {/* second div */}
           {/* <div className="flex flex-col my-12 text-2xl justify-center items-center">
@@ -701,39 +590,9 @@ export default function DetailVendor({
           )}
         </div>
       </div> */}
-
-          <div className="bg-primary text-white md:px-32 px-16 pt-3 pb-2 rounded-t-2xl shadow-lg">
-            <div className="text-center pb-1 bg-white rounded-full w-24 mx-auto"></div>
-            <div className="shadow-lg text-white rounded-lg mt-10">
-              <div className="text-3xl font-bold mt-3">Wedding Platform</div>
-              <span className="text-md">Tagline Here</span>
-              <hr />
-              <div className="flex text-xs py-3 justify-between">
-                <div className="flex gap-8">
-                  <span>
-                    <FontAwesomeIcon icon={faCopyright} /> 2024 Wedding
-                    Platform, Inc.
-                  </span>
-                  <ul className="flex flex-wrap items-center justify-center gap-5">
-                    <li>- Privacy</li>
-                    <li>- Terms</li>
-                    <li>- Sitemap</li>
-                  </ul>
-                </div>
-                <div className="flex gap-2">
-                  <span>
-                    <FontAwesomeIcon icon={faGlobe} />
-                    English (US)
-                  </span>
-                  <FontAwesomeIcon icon={faFacebook} />
-                  <FontAwesomeIcon icon={faX} />
-                  <FontAwesomeIcon icon={faInstagram} />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

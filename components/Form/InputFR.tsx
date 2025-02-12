@@ -2,9 +2,10 @@ import React from "react";
 import InputLabel from "./InputLabel";
 // import TextInput from "./TextInput";
 import InputError from "./InputError";
-import { TextInput } from "flowbite-react";
+import TextInput from "./TextInput";
+// import { TextInput } from "flowbite-react";
 
-interface InputRSProps {
+interface InputFRProps {
 	className?: string;
 	label?: string;
 	id?: string;
@@ -17,9 +18,10 @@ interface InputRSProps {
 	values?: string | null;
 	placeholder?: string;
 	readonly?: boolean;
+	labelBold?: boolean;
 }
 
-const InputRS: React.FC<InputRSProps> = ({
+const InputFR: React.FC<InputFRProps> = ({
 	className = "col-md-6 col-sm-6",
 	label = "",
 	id,
@@ -32,11 +34,15 @@ const InputRS: React.FC<InputRSProps> = ({
 	values = null,
 	placeholder = "",
 	readonly = false,
+	labelBold = false,
 }) => {
 	return (
 		<div className={className}>
 			{label && (
-				<InputLabel htmlFor={id} value={label}>
+				<InputLabel
+					htmlFor={id}
+					value={label}
+					className={labelBold ? "font-bold" : ""}>
 					{label}
 				</InputLabel>
 			)}
@@ -45,7 +51,7 @@ const InputRS: React.FC<InputRSProps> = ({
 				type={type}
 				name={name}
 				value={values || ""}
-				className={`mt-1 block w-full ${error ? "is-invalid" : ""}`}
+				className={`mt-1 w-full ${error ? "is-invalid" : ""}`}
 				autoComplete={name}
 				onChange={handleChange || undefined}
 				placeholder={placeholder}
@@ -59,4 +65,4 @@ const InputRS: React.FC<InputRSProps> = ({
 	);
 };
 
-export default InputRS;
+export default InputFR;
