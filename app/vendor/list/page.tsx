@@ -129,13 +129,6 @@ export default function ListVendor() {
 			<div className='px-3 py-2 lg:container mx-auto'>
 				<div className='md:mx-16 mt-16 mb-8'>
 					<UpReveal>
-						{/* <BannerWithText url='/banner/bg-2.png'>
-							<div className='pe-12 p-12 lg:p-28 font-bold text-lg lg:text-2xl'>
-								Look! The Heaven Near Us
-								<br />
-								Let&apos;s explore our venues
-							</div>
-						</BannerWithText> */}
 						<div className='mt-12 h-40 rounded-lg'>
 							<SliderPhotos photos={photos} qty={3} />
 						</div>

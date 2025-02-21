@@ -1,19 +1,39 @@
-import React from "react";
+import Image from "next/image";
+import React, { useState } from "react";
 
-export const BannerWithText = ({
+const BannerWithText = ({
 	url,
 	children,
-	className,
+	className = "",
+	alt = "Banner image",
 }: {
 	url: string;
 	children?: React.ReactNode;
 	className?: string;
+	alt?: string;
 }) => {
+	const [loading, setLoading] = useState<boolean>(true);
 	return (
 		<div
-			style={{ backgroundImage: `url(${url})` }}
-			className={`bg-no-repeat bg-center bg-cover rounded-lg shadow-md h-64 text-white flex items-center justify-between grid-cols-2 ${className}`}>
-			{children}
+			className={`relative rounded-lg shadow-md h-64 text-white flex items-center justify-between ${className}`}>
+			{/* Optimized Background Image */}
+			<Image
+				src={url}
+				alt={alt}
+				layout='fill'
+				className={`object-cover transition-opacity rounded-lg z-0 duration-300 ${
+					loading ? "opacity-0" : "opacity-100"
+				}`}
+				onLoad={() => setLoading(false)}
+				priority
+			/>
+
+			{/* Content Layer */}
+			<div className='relative z-10 w-full h-full flex items-center justify-between p-6 bg-black/30 rounded-lg'>
+				{children}
+			</div>
 		</div>
 	);
 };
+
+export default BannerWithText;

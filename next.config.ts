@@ -2,13 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	env: {
-		sakinahAPI: "https://api.idsakinah.com",
+		sakinahAPI: "https://sakinah-be.hafiyyansayy.id",
+		// sakinahAPI: "https://api.idsakinah.com",
 	},
 	images: {
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "api.idsakinah.com",
+				hostname: "sakinah-be.hafiyyansayy.id",
+				// hostname: "api.idsakinah.com",
 				port: "",
 				pathname: "/media/**",
 			},
@@ -21,5 +23,9 @@ const nextConfig: NextConfig = {
 		],
 	},
 };
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+	enabled: process.env.ANALYZE === "true",
+});
 
+module.exports = withBundleAnalyzer({});
 export default nextConfig;

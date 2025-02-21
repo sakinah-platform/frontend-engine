@@ -11,8 +11,13 @@ export const Footer = () => {
 				className='bg-primary2 text-white md:px-32 px-16 lg:fixed z-40 bottom-0 left-0 w-full pt-3 pb-2 shadow-lg rounded-t-2xl'>
 				<div className='text-center pb-1 bg-white rounded-full w-24 mx-auto'></div>
 				<div className='text-white rounded-lg'>
-					<div className='relative w-36 h-10 text-center mx-auto my-5'>
-						<Image src={`/logo/PNG/secondary_5.png`} alt='secondary_5' fill />
+					<div className='relative w-36 h-9 text-center mx-auto my-5'>
+						<Image
+							src={`/logo/PNG/secondary_5.png`}
+							alt='secondary_5'
+							fill
+							priority={false}
+						/>
 					</div>
 					<hr />
 					<div className='lg:flex text-xs py-3 justify-between'>
@@ -25,22 +30,22 @@ export const Footer = () => {
 							<li>- Privacy</li>
 							<li>- Terms</li>
 						</ul> */}
-            </div>
-            <div className="flex gap-2">
-              {/* <span>
+						</div>
+						<div className='flex gap-2'>
+							{/* <span>
 							<FontAwesomeIcon icon={faGlobe} />
 							English (US)
 						</span> */}
-              {/* <FontAwesomeIcon icon={faFacebook} />
+							{/* <FontAwesomeIcon icon={faFacebook} />
 						<FontAwesomeIcon icon={faX} /> */}
 
-              <a
-                href="https://www.instagram.com/sakinahweddingplatform/"
-                target="_blank"
-                rel="noopener noreferrer"
-                // className='btn-primary py-2 px-4 rounded-full text-xl'
-              >
-                {/* <FontAwesomeIcon
+							<a
+								href='https://www.instagram.com/sakinahweddingplatform/'
+								target='_blank'
+								rel='noopener noreferrer'
+								// className='btn-primary py-2 px-4 rounded-full text-xl'
+							>
+								{/* <FontAwesomeIcon
 									icon={faInstagramSquare}
 									className='me-2'
 									size='xl'

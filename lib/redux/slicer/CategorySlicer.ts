@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface CategoryType {
+export interface TypeCategory {
 	// [x: string]: string;
 	// title: string;
 	id: number;
@@ -15,7 +15,7 @@ interface GenericState<T> {
 	error: string | null;
 }
 
-const initialState: GenericState<CategoryType> = {
+const initialState: GenericState<TypeCategory> = {
 	category: [],
 	loadingCategory: false,
 	error: null,
@@ -23,7 +23,7 @@ const initialState: GenericState<CategoryType> = {
 
 export const fetchVendorCategory = createAsyncThunk(
 	"master_data/vendor_category",
-	async (): Promise<[CategoryType]> => {
+	async (): Promise<[TypeCategory]> => {
 		const response = await axios.get(
 			`${process.env.sakinahAPI}/master_data/vendor_category`
 		);
@@ -38,7 +38,7 @@ const categorySlice = createSlice({
 		start(state) {
 			state.loadingCategory = true;
 		},
-		categoryReducer(state, action: PayloadAction<CategoryType[]>) {
+		categoryReducer(state, action: PayloadAction<TypeCategory[]>) {
 			state.loadingCategory = false;
 			state.category = [...state.category, ...action.payload];
 		},

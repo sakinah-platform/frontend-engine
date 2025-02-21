@@ -64,7 +64,7 @@ export default function Home() {
 	return (
 		<>
 			<SecondNavbar />
-			<div className="bg-[url('/banner/bg-2.png')] bg-no-repeat bg-center bg-cover h-72 text-white text-center">
+			<div className="bg-[url('/banner/bg-1.jpeg')] bg-no-repeat bg-center bg-cover h-72 text-white text-center">
 				<div className='pe-12 p-12 lg:p-28 text-lg lg:text-3xl'>
 					Everything you need to plan your <br /> fairy-tale wedding
 				</div>

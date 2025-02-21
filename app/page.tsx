@@ -5,16 +5,16 @@ import {
 	// UpRevealWord,
 } from "@/components/MotionTemplate";
 import { SliderCard } from "@/components/SliderCard";
-import { useEffect } from "react";
+import { Key, useEffect, useState } from "react";
 import { MainNavbar } from "@/components/Navbar/Main";
-import { useDispatch, useSelector } from "react-redux";
 // import { categoryReducer } from "../lib/redux/slicer/CategorySlicer";
-import { AppDispatch, RootState } from "../lib/store";
 // import { Form, Formik } from "formik";
 import Image from "next/image";
-import { BannerWithText } from "@/components/BannerWithText";
 import { Footer } from "@/components/Footer";
-import { fetchVendorCategory } from "@/lib/redux/slicer/CategorySlicer";
+import { TypeCategory } from "@/lib/redux/slicer/CategorySlicer";
+import dynamic from "next/dynamic";
+import { apiCall } from "@/lib/apiCall";
+import { IconMenu } from "@/components/ImageLoader";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import {
 // 	faInstagram,
@@ -23,14 +23,26 @@ import { fetchVendorCategory } from "@/lib/redux/slicer/CategorySlicer";
 
 export default function Home() {
 	// const [template, setTemplate] = useState(0);
-	const { category, loadingCategory } = useSelector(
-		(state: RootState) => state.categories
-	);
-	const dispatch = useDispatch<AppDispatch>();
+	// const { category, loadingCategory } = useSelector(
+	// 	(state: RootState) => state.categories
+	// );
+	const [loadingFetch, setLoadingFetch] = useState<boolean>(true);
+	const [category, setCategory] = useState<TypeCategory[]>([]);
+	// const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		dispatch(fetchVendorCategory());
-	}, [dispatch]);
+		const fetchCategory = async () => {
+			const data = await apiCall<TypeCategory[]>("vendor_category");
+			console.log("Fetched Category Data:", data);
+			setCategory(data ?? []);
+			setLoadingFetch(false);
+		};
+
+		fetchCategory();
+	}, []);
+	// useEffect(() => {
+	// dispatch(fetchVendorCategory());
+	// }, [dispatch]);
 
 	type ExplainType = {
 		title: string;
@@ -117,47 +129,38 @@ export default function Home() {
 	// useEffect(() => {
 	// 	dispatch(categoryReducer(category));
 	// }, [categories]);
+	const BannerText = dynamic(
+		() => import("../components/BannerWithText").then((mod) => mod.default),
+		{
+			ssr: false,
+			loading: () => <p>Loading...</p>,
+		}
+	);
+
 	return (
 		<>
 			<MainNavbar />
 			<div className='px-3 py-2 md:container mx-auto'>
 				<div className='md:mx-16 mt-16'>
 					<UpReveal>
-						<BannerWithText url='/banner/bg-1.jpeg' className='bg-center'>
+						<BannerText url='/banner/bg-1.jpeg' className='bg-center'>
 							<div className='pe-12 p-12 lg:p-28 font-bold text-lg lg:text-2xl'>
 								Ciptakan moment pernikahan
 								<br />
 								yang tidak terlupakan
 								<br />
 								bersama Sakinah
-								{/* Yuk! ciptain
-								<br />
-								pernikahan
-								<span className='absolute lg:ms-3 ms-1 text-center'>
-									<UpRevealWord words={["Keren", "Mengagumkan", "Sempurna"]} />
-								</span>
-								<br />
-								bersama Sakinah */}
 							</div>
-						</BannerWithText>
+						</BannerText>
 						<div className='text-center text-md md:text-lg lg:text-2xl xl:text-3xl my-10'>
 							Kami hadir untuk membantu Anda
 							<br />
 							<strong className={`font-alice`}>
 								merencanakan pernikahan impian dengan mudah dan sempurna
 							</strong>
-							{/* Kami sudah berhasil membersamai
-							<strong className={`font-alice m-2`}>
-								<CountingText from={1111} to={1357} />
-							</strong>
-							Pengantin
-							<br />
-							<strong className={`font-alice`}>
-								Merencanakan pernikahan impian mereka
-							</strong> */}
 						</div>
 						<div className='rounded-lg shadow bg-white p-4 text-center'>
-							{loadingCategory ? (
+							{loadingFetch ? (
 								"Loading..."
 							) : (
 								<>
@@ -168,18 +171,18 @@ export default function Home() {
 									<div className='grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-4 justify-items-center mt-3 mb-2'>
 										{category
 											?.slice()
-											?.sort((a, b) => a.name[0].localeCompare(b.name[0]))
-											?.map((item, i) => (
+											?.sort((a: { name: string }, b: { name: string }) =>
+												a.name.localeCompare(b.name)
+											)
+											?.map((item, i: Key | null | undefined) => (
 												<a
 													href={`/vendor/list?category=${item.id}`}
 													className='flex shadow rounded-lg p-3 w-48 text-start items-center transition hover:bg-secondary2 hover:shadow-lg'
 													key={i}>
 													<div className='relative w-10 h-10'>
-														<Image
+														<IconMenu
 															src={item.icon}
-															alt={item.name}
-															fill
-															className='object-cover'
+															alt={`${item.name} icon`}
 														/>
 													</div>
 													<span className='ms-2 text-md text-primary font-bold'>
@@ -191,11 +194,9 @@ export default function Home() {
 											href={`/vendor/list`}
 											className='flex shadow rounded-lg p-3 w-48 text-start items-center transition hover:bg-secondary2 hover:shadow-lg'>
 											<div className='relative w-10 h-10'>
-												<Image
+												<IconMenu
 													src={"/logo/PNG/submark_2.png"}
-													alt={"Semua Kategori"}
-													fill
-													className='object-cover'
+													alt={"Semua Kategori icon"}
 												/>
 											</div>
 											<span className='ms-2 text-md text-primary font-bold'>
@@ -203,72 +204,6 @@ export default function Home() {
 											</span>
 										</a>
 									</div>
-									{/* <Formik
-										initialValues={{
-											categories: [] as number[],
-										}}
-										// validationSchema={{}}
-										onSubmit={(values) => {
-											// same shape as initial values
-											// console.log(values);
-											location.replace("/vendor/list");
-										}}>
-										{({ values, setFieldValue }) => (
-											<Form>
-												<div
-													className={`grid ${
-														category.length > 5
-															? "lg:grid-rows-6 sm:grid-rows-12 sm:grid-flow-col"
-															: ""
-													}  gap-1 ms-10 mt-3`}>
-													{category
-														?.slice()
-														?.sort((a, b) => a.name[0].localeCompare(b.name[0]))
-														?.map((item, i) => (
-															<div className='flex items-center' key={i}>
-																<input
-																	id={`checked-checkbox-${i}`}
-																	type='checkbox'
-																	value={i}
-																	checked={values.categories.includes(i)}
-																	onChange={(e) => {
-																		if (e.target.checked) {
-																			// Add to categories
-																			setFieldValue("categories", [
-																				...values.categories,
-																				i,
-																			]);
-																		} else {
-																			// Remove from categories
-																			setFieldValue(
-																				"categories",
-																				values.categories.filter(
-																					(category) => category !== i
-																				)
-																			);
-																		}
-																	}}
-																	className={`w-5 h-5 text-primary border-primary rounded${
-																		values.categories.includes(i) ? "-full" : ""
-																	} hover:rounded-full focus:ring-amber-500 focus:ring-2`}
-																	name='categories[]'
-																/>
-																<label
-																	htmlFor={`checked-checkbox-${i}`}
-																	className='ms-2 text-md lg:text-lg font-medium text-gray-900'>
-																	{item.name}
-																</label>
-															</div>
-														))}
-												</div>
-												<button
-													type='submit'
-													className='btn-primary font-bold lg:text-lg px-5 py-1.5 m-3'>
-													Cari
-												</button>
-											</Form>
-										)}
-									</Formik> */}
 								</>
 							)}
 						</div>
@@ -289,6 +224,7 @@ export default function Home() {
 													alt={item.image}
 													className='rounded-lg shadow object-cover'
 													fill
+													priority={false}
 												/>
 											</div>
 										</div>
@@ -308,15 +244,13 @@ export default function Home() {
 								);
 							})}
 						</div>
-						<div className='bg-primary2 my-3 xl:mx-24 sm:mx-auto shadow text-center text-md md:text-lg lg:text-2xl py-8 overflow-hidden rounded-lg shadow-lg p-8 2xl:px-36 xl:px-8 lg:px-0 md:px-4 px-2'>
+						<div className='bg-primary2 my-3 xl:mx-24 sm:mx-auto text-center text-md md:text-lg lg:text-2xl py-8 overflow-hidden rounded-lg shadow-lg p-8 2xl:px-36 xl:px-8 lg:px-0 md:px-4 px-2'>
 							<div className='font-bold text-white pb-5'>
-								{/* Hear the testimony directly from our satisfied bride and groom */}
 								Cerita mereka tentang layanan kami
 							</div>
 							<SliderCard reviews={reviews} />
 						</div>
 						<div className='text-center text-md md:text-lg lg:text-2xl xl:text-3xl p-10'>
-							{/* Because you deserve your own fairy-tale to come true */}
 							<div className='mb-3'>
 								Karena kamu layak menjadikan pernikahan impianmu menjadi
 								kenyataan
@@ -330,6 +264,7 @@ export default function Home() {
 											alt={"bintang"}
 											fill
 											className='object-cover'
+											priority={false}
 										/>
 									</div>
 								))}
@@ -353,12 +288,4 @@ export default function Home() {
 			</div>
 		</>
 	);
-}
-
-{
-	/* <Carousel>
-		{[...Array(4)].map((_, i) => (
-			<img src={`/banner/bg-1.png`} alt='' key={i} />
-		))}
-	</Carousel> */
 }
