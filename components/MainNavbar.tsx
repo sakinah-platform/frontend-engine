@@ -1,61 +1,58 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import ApplicationLogo from "./ApplicationLogo";
 
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { faCartShopping, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { Navbar } from "flowbite-react";
 
 export const MainNavbar = () => {
-	const auth: any = {
-		user: {
-			name: "Fikar",
-			email: "fikar.6@gmail.com",
-		},
-	};
+	// const handleLogout = async () => {
+	// dispatch(processStateReducer("loading"));
+	// try {
+	//     const csrfToken = document.querySelector(
+	//         'input[name="_token"]'
+	//     ).value;
+	//     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
+	//     const response = await axios.post(route("logout"), {
+	//         headers: {
+	//             "Content-Type": "multipart/form-data",
+	//         },
+	//     });
+	//     console.log(response);
+	//     if (response.status === 200) {
+	//         dispatch(processStateReducer("success"));
+	//         location.replace(route("login"));
+	//     }
+	// } catch (error) {
+	//     dispatch(processMessageFailedReducer(error.response.data.message));
+	//     console.error("Error response: ", error.response.data.message); // Log error to console
+	// 	// }
+	// };
 
-	const handleLogout = async () => {
-		// dispatch(processStateReducer("loading"));
-		// try {
-		//     const csrfToken = document.querySelector(
-		//         'input[name="_token"]'
-		//     ).value;
-		//     axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
-		//     const response = await axios.post(route("logout"), {
-		//         headers: {
-		//             "Content-Type": "multipart/form-data",
-		//         },
-		//     });
-		//     console.log(response);
-		//     if (response.status === 200) {
-		//         dispatch(processStateReducer("success"));
-		//         location.replace(route("login"));
-		//     }
-		// } catch (error) {
-		//     dispatch(processMessageFailedReducer(error.response.data.message));
-		//     console.error("Error response: ", error.response.data.message); // Log error to console
-		// }
-	};
+	// const linkNavbar = [
+	// 	{ title: "Wedding Vendor", link: "/", active: true },
+	// 	{ title: "Wedding Checklist", link: "#", active: false },
+	// 	{ title: "Wedding Calculator", link: "#", active: false },
+	// ];
+
 	return (
-		<Navbar className='w-[95%] mx-auto rounded-b-2xl shadow' fluid rounded>
-			<div className='flex items-center basis-1/3 gap-5'>
-				<Navbar.Brand href='/'>
-					<ApplicationLogo className='object-cover h-12 w-24 ' />
-				</Navbar.Brand>
-				<div className='relative flex grow'>
-					<input
-						className='border-2 border-amber-800 rounded p-2 pr-10 grow h-9'
-						placeholder='Cari...'
-					/>
-					<button className='bg-amber-800 text-white px-2 rounded-md absolute end-0 mt-1 me-1'>
-						<FontAwesomeIcon icon={faSearch} />
-					</button>
+		<Navbar
+			className='w-[95%] mx-auto rounded-b-2xl shadow fixed left-0 right-0 z-50'
+			fluid
+			rounded
+			// aria-hidden='true'
+			role='navigation'>
+			<Navbar.Brand href='/'>
+				<div className='relative w-36 h-8 m-2'>
+					<ApplicationLogo className='object-cover' alt='Logo Navbar' />
 				</div>
-			</div>
+			</Navbar.Brand>
 
 			<div className='flex md:order-2 items-center gap-3'>
-				<FontAwesomeIcon icon={faCartShopping} size='2x' />
-				<Dropdown
+				<button className='bg-primary2 text-white px-3 py-1 rounded-lg font-bold'>
+					Login
+				</button>
+				{/* <Dropdown
 					arrowIcon={false}
 					inline
 					label={
@@ -76,14 +73,27 @@ export const MainNavbar = () => {
 					<Dropdown.Item>Earnings</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item>Sign out</Dropdown.Item>
-				</Dropdown>
+				</Dropdown> */}
 				<Navbar.Toggle />
 			</div>
 			{/* <Navbar.Collapse>
-				<Navbar.Link href='#' active>
-					Home
-				</Navbar.Link>
-				<Navbar.Link href='#'>About</Navbar.Link>
+				{linkNavbar.map((item, i) => (
+					<Navbar.Link href={item.link} key={i}>
+						{item.active ? (
+							<>
+								<button className='bg-primary2 text-white px-3 py-1 rounded-lg font-bold'>
+									{item.title}
+								</button>
+								<div className='text-center pb-2 bg-primary2 mt-1 rounded-full w-12 mx-auto'></div>
+							</>
+						) : (
+							<button className='hover:border-b-4 hover:border-primary hover:text-primary pb-4 rounded-lg'>
+								{item.title}
+								<div className=' text-center pb-2 bg-primary2 mt-1 rounded-full w-12 mx-auto'></div>
+							</button>
+						)}
+					</Navbar.Link>
+				))}
 			</Navbar.Collapse> */}
 		</Navbar>
 	);
